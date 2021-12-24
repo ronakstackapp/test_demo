@@ -18,14 +18,18 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
+//late TabController tabController;
+
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
-  late TabController _tabController;
+   late TabController tabController;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(
+    tabController = TabController(
         vsync: this, length: 3, initialIndex: widget.selectedPage);
+
+
     if (widget.userModel != null) {
       // ignore: avoid_print
       print("${widget.userModel!.name}");
@@ -34,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    _tabController.dispose();
+    tabController.dispose();
     super.dispose();
   }
 
@@ -55,10 +59,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               icon: Icon(Icons.supervisor_account_sharp),
             ),
           ],
-          controller: _tabController,
+          controller: tabController,
         ),
       ),
       body: TabBarView(
+        physics: const NeverScrollableScrollPhysics(),
         children: [
            RegisterScreen(userModel: widget.userModel,),
           FillDataScreen(
@@ -67,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           ),
           const ShowDataScreen(),
         ],
-        controller: _tabController,
+        controller: tabController,
       ),
     );
   }

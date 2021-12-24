@@ -15,15 +15,18 @@ String? emailValidation(String? value) {
   }
 }
 
-String? validatePrefDate(String value, BuildContext context,DateTime? dateOfBirth ,bool? isAdult ) {
-  if (dateOfBirth == null) {
+String? validatePrefDate(String value, BuildContext context,String dateOfBirth ,bool? isAdult ) {
+  print("isAdult -->>> $isAdult");
+  if (dateOfBirth.isEmpty) {
     return "Enter DoB";
   }
-  else if(isAdult == false){
+  else {
+    if(isAdult == false){
     return "adult only allowed";
   }
   else {
     return null;
+  }
   }
 }
 

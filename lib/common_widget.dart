@@ -1,27 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CommonTextField extends StatelessWidget {
-
   final TextEditingController? controller;
   final String? hint;
   final Widget? suffixIcon;
   final bool? obscureText;
+  final bool? readOnly;
   final TextInputType? textInputType;
   final TextInputAction? textInputAction;
   final FormFieldValidator<String>? validatorOnTap;
   final GestureTapCallback? onChangedOnTap;
+  final List<TextInputFormatter>? inputFormatters;
 
-  const CommonTextField({Key? key, this.controller, this.hint, this.suffixIcon, this.obscureText, this.textInputType, this.textInputAction, this.validatorOnTap, this.onChangedOnTap}) : super(key: key);
+  const CommonTextField(
+      {Key? key,
+      this.controller,
+      this.hint,
+      this.suffixIcon,
+      this.obscureText,
+      this.textInputType,
+      this.textInputAction,
+      this.validatorOnTap,
+      this.onChangedOnTap,
+      this.inputFormatters, this.readOnly})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      readOnly: readOnly??false,
       onTap: onChangedOnTap,
       validator: validatorOnTap,
       controller: controller,
       keyboardType: textInputType,
       textInputAction: textInputAction,
+      inputFormatters: inputFormatters,
       obscureText: obscureText ?? false,
+      cursorColor: Colors.transparent,
       decoration: InputDecoration(
         hintText: hint,
         suffixIcon: suffixIcon,

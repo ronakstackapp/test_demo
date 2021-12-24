@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:test_demo/common_widget.dart';
 import 'package:test_demo/model/usermodel.dart';
@@ -12,7 +13,9 @@ import 'home_screen.dart';
 class FillDataScreen extends StatefulWidget {
   final UserModel? userModel;
   final int? index;
-  const FillDataScreen({Key? key, this.userModel, this.index}) : super(key: key);
+
+  const FillDataScreen({Key? key, this.userModel, this.index})
+      : super(key: key);
 
   @override
   _FillDataScreenState createState() => _FillDataScreenState();
@@ -33,22 +36,30 @@ class _FillDataScreenState extends State<FillDataScreen> {
   bool confirmPassword = true;
   bool password = true;
   bool isAdult = false;
-  DateTime? picked;
+
+  // DateTime? picked;
 
   @override
   void initState() {
+    FocusManager.instance.primaryFocus?.unfocus();
     // TODO: implement initState
-    if(widget.userModel != null){
+    if (widget.userModel != null) {
       nameController.text = widget.userModel!.name!;
       emailController.text = widget.userModel!.email!;
-      dobController.text = "${widget.userModel!.dob?? DateTime.now()}";
-     // selectedDate = widget.userModel!.dob??DateTime.now();
+      selectedDate =  widget.userModel!.dob;
+      dobController.text = DateFormat('dd/MM/yyyy').format(selectedDate!);
       passwordController.text = widget.userModel!.password!;
       confirmPasswordController.text = widget.userModel!.password!;
-      print("picked --->>$picked");
-      print("picked --->>${widget.index}");
-    }
+      print("initState  -- index --->> ${widget.index}");
+      print("picked --->> DoB${widget.userModel!.dob}");
 
+      if (DateTime.now().year - selectedDate!.year > 18) {
+        print("adult");
+        isAdult = true;
+      } else {
+        isAdult = false;
+      }
+    }
     super.initState();
   }
 
@@ -73,6 +84,7 @@ class _FillDataScreenState extends State<FillDataScreen> {
                           horizontal: 15, vertical: 6),
                       child: CommonTextField(
                           controller: nameController,
+                          textInputType: TextInputType.name,
                           hint: "Enter Your Name",
                           validatorOnTap: (String? value) {
                             //   String Patten2 = r"^[a-zA-Z_ ]{6,}*$";
@@ -84,24 +96,23 @@ class _FillDataScreenState extends State<FillDataScreen> {
                             } else {
                               return null;
                             }
-                          }
-                          // suffixIcon: const Icon(Icons.remove_red_eye, color: Colors.blue),
-                          ),
+                          }),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 15, vertical: 6),
                       child: CommonTextField(
                         controller: emailController,
+                        textInputType: TextInputType.emailAddress,
                         hint: "Enter Your Email",
                         validatorOnTap: (value) => emailValidation(value),
-                        // suffixIcon: const Icon(Icons.remove_red_eye, color: Colors.blue),
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 15, vertical: 6),
                       child: CommonTextField(
+                        readOnly: true,
                         controller: dobController,
                         hint: "Date of Birth",
                         onChangedOnTap: () {
@@ -110,9 +121,8 @@ class _FillDataScreenState extends State<FillDataScreen> {
                             _selectDate(context);
                           });
                         },
-                        // suffixIcon: const Icon(Icons.remove_red_eye, color: Colors.blue),
-                        validatorOnTap: (value) =>
-                            validatePrefDate(value!, context,selectedDate,isAdult),
+                        validatorOnTap: (value) => validatePrefDate(
+                            value!, context, dobController.text, isAdult),
                       ),
                     ),
                     Padding(
@@ -122,6 +132,11 @@ class _FillDataScreenState extends State<FillDataScreen> {
                         controller: passwordController,
                         hint: "Enter Password",
                         obscureText: password ? false : true,
+                        // inputFormatters: [
+                        //    FilteringTextInputFormatter.digitsOnly,
+                        //    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                        //    //LengthLimitingTextInputFormatter(10),
+                        //    ],
                         validatorOnTap: (value) =>
                             passwordValidation(value, passwordController.text),
                         suffixIcon: InkWell(
@@ -165,38 +180,40 @@ class _FillDataScreenState extends State<FillDataScreen> {
                       height: 15,
                     ),
                     Button(
-                      buttonText: widget.userModel == null?"Register":"Update",
+                      buttonText:
+                          widget.userModel == null ? "Register" : "Update",
                       pressedButton: () {
                         FocusScope.of(context).requestFocus(FocusNode());
-
-                        // ///
-                        // print("${DateTime.now().year - selectedDate!.year > 18}");
-
                         UserModel userModel = UserModel(
-                            name: nameController.text,
-                            email: emailController.text,
-                            dob: dobController.text,
-                            password: passwordController.text,
+                          name: nameController.text,
+                          email: emailController.text,
+                          dob:selectedDate,
+                          password: passwordController.text,
                         );
+                        print("userModelList -- selectedDate -->>$selectedDate");
 
                         if (_key.currentState!.validate()) {
                           FocusScope.of(context).requestFocus(FocusNode());
-                          if(widget.userModel == null){
+                          if (widget.userModel == null) {
                             userModelList.add(userModel);
-                          }else{
+                          } else {
                             userModelList.removeAt(widget.index!);
                             userModelList.insert(widget.index!, userModel);
                           }
                           widget.userModel == null;
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) {
-                                return const HomeScreen(selectedPage: 2);
-                              }));
+
+                          // tabController.index =2;
+                          // Navigator.of(context).push(MaterialPageRoute(
+                          //     builder: (BuildContext context) {
+                          //   return const HomeScreen(selectedPage: 2);
+                          // }));
+
+                         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                           const  HomeScreen(selectedPage: 2)), (Route<dynamic> route) => false);
 
                           // ignore: avoid_print
                           print("userModelList -->>${userModelList.length}");
                           print("userModelList -->>${userModelList[0].email}");
-
                         }
                       },
                     ),
@@ -214,7 +231,7 @@ class _FillDataScreenState extends State<FillDataScreen> {
   }
 
   _selectDate(BuildContext context) async {
-    final picked = await showDatePicker(
+     DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(1800, 8),
@@ -232,18 +249,21 @@ class _FillDataScreenState extends State<FillDataScreen> {
       //   );
       // },
     );
+     print("picked 00-->>$picked");
     if (picked != null && picked != selectedDate) {
+      print("picked 01-->>$picked");
       setState(() {
         selectedDate = picked;
-        dobController.text = DateFormat('dd/MM/yyyy').format(picked);
+        dobController.text = DateFormat('dd/MM/yyyy').format(selectedDate!);
 
-        if(DateTime.now().year - selectedDate!.year > 18){
+        print('selecteddATE --> ${selectedDate}');
+
+        if (DateTime.now().year - selectedDate!.year > 18) {
           print("adult");
           isAdult = true;
-        }else{
+        } else {
           isAdult = false;
         }
-
       });
     }
   }

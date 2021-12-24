@@ -27,6 +27,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   void initState() {
+    FocusManager.instance.primaryFocus?.unfocus();
     // TODO: implement initState
     if (widget.userModel != null) {
       print("RegisterScreen --> initState --> userModel!=null ");
@@ -54,6 +55,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 15, vertical: 10),
                       child: CommonTextField(
+                        textInputType: TextInputType.emailAddress,
                         validatorOnTap: (value) => loginEmailValidation(value),
                         controller: emailController,
                         hint: "Enter Your Email",
@@ -66,6 +68,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         controller: passwordController,
                         hint: "Enter Your Password",
                         obscureText: password ? false : true,
+                       // textInputType: TextInputType.phone,
                         validatorOnTap: (value) =>
                             loginPasswordValidation(value),
                         suffixIcon: InkWell(
@@ -90,19 +93,62 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         FocusScope.of(context).requestFocus(FocusNode());
 
                        if(_key.currentState!.validate()){
+                        bool isEmailAvailable =  userModelList.any((element) => element.email == emailController.text);
+
+
+                        if(isEmailAvailable){
+                          bool isPassWordAvailable =  userModelList.any((element) => element.password == passwordController.text);
+                          if(isPassWordAvailable){
+                           // userName = element.name;
+                            _showDialog();
+                          }else {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content: Text(
+                                "Incorrect password",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              backgroundColor: Colors.red,
+                            ));
+                          }
+                        }else{
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text(
+                              "Incorrect Email address",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            backgroundColor: Colors.red,
+                          ));
+                        }
+                    //   UserModel userModel =  userModelList.firstWhere((element) =>  element.email == emailController.text,orElse: ()=> UserModel(name: 'no'));
                          // ignore: avoid_function_literals_in_foreach_calls
-                         userModelList.forEach((element) async {
-                           print("-->> ${element.email}");
+
+
+                       /*  userModelList.forEach((element) async {
+                           print( "register -- element.email-->> ${element.email}");
                            if (element.email == emailController.text && emailController.text.trim().isNotEmpty) {
                              print("${element.email}");
-
+                        print("register ---->>0");
                              if (element.password == passwordController.text) {
+                               print("register ---->>1");
                                print("userModelList --> ${element.toJson()}");
                                print(""
                                    " --> ${element.toJson()}");
                                userName = element.name;
-                              await _showDialog();
+                            ///  await _showDialog();
                              } else if(passwordController.text.trim().isNotEmpty) {
+                               print("register ---->>2");
+                               ScaffoldMessenger.of(context)
+                                   .showSnackBar(const SnackBar(
+                                 content: Text(
+                                   "Incorrect password",
+                                   style: TextStyle(color: Colors.white),
+                                 ),
+                                 backgroundColor: Colors.red,
+                               ));
+                             }else{
+                               print("register ---->>3");
                                ScaffoldMessenger.of(context)
                                    .showSnackBar(const SnackBar(
                                  content: Text(
@@ -112,7 +158,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                  backgroundColor: Colors.red,
                                ));
                              }
-                           } else if( emailController.text.trim().isNotEmpty && emailController.text != element.email) {
+                           }
+                           // else if( emailController.text.trim().isNotEmpty && emailController.text != element.email) {
+                           //   print("register ---->>4");
+                           //   ScaffoldMessenger.of(context)
+                           //       .showSnackBar(const SnackBar(
+                           //     content: Text(
+                           //       "Incorrect Email address",
+                           //       style: TextStyle(color: Colors.white),
+                           //     ),
+                           //     backgroundColor: Colors.red,
+                           //   ));
+                           // }
+                           //
+                           else{
+                             print("register ---->>5");
                              ScaffoldMessenger.of(context)
                                  .showSnackBar(const SnackBar(
                                content: Text(
@@ -123,6 +183,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                              ));
                            }
                          });
+                         */
                        }
 
                       },
@@ -150,10 +211,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
             TextButton(
                 onPressed: () {
                   print("Show Dialog -->>");
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (BuildContext context) {
-                    return const HomeScreen(selectedPage: 2);
-                  }));
+
+                  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                  const  HomeScreen(selectedPage: 2)), (Route<dynamic> route) => false);
+
+                  // Navigator.of(context)
+                  //     .push(MaterialPageRoute(builder: (BuildContext context) {
+                  //   return const HomeScreen(selectedPage: 2);
+                  // }));
                 },
                 child: const Text("ok"))
           ],

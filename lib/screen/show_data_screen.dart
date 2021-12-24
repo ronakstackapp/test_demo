@@ -13,6 +13,15 @@ class ShowDataScreen extends StatefulWidget {
 }
 
 class _ShowDataScreenState extends State<ShowDataScreen> {
+
+  @override
+  void initState() {
+    FocusManager.instance.primaryFocus?.unfocus();
+    // TODO: implement initState
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,10 +74,10 @@ class _ShowDataScreenState extends State<ShowDataScreen> {
                                   const SizedBox(
                                     width: 5,
                                   ),
-                                  Text("${userModelList[index].dob}")
-                                  // Text(DateFormat('dd/MM/yyyy').format(
-                                  //     userModelList[index].dob ??
-                                  //         DateTime.now())),
+                                //  Text("${userModelList[index].dob}")
+                                  Text(DateFormat('dd/MM/yyyy').format(
+                                      userModelList[index].dob ??
+                                          DateTime.now())),
                                 ],
                               ),
                               // _RowData(title: "DOB : ",data: DateFormat('dd/MM/yyyy').format(userModelList[index].dob!),),
@@ -90,14 +99,20 @@ class _ShowDataScreenState extends State<ShowDataScreen> {
                           children: [
                             InkWell(
                               onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (BuildContext context) {
-                                  return HomeScreen(
-                                    selectedPage: 1,
-                                    userModel: userModelList[index],
-                                    index: index,
-                                  );
-                                }));
+
+                                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                                  HomeScreen( selectedPage: 1,
+                                         userModel: userModelList[index],
+                                         index: index,)), (Route<dynamic> route) => false);
+
+                                // Navigator.of(context).push(MaterialPageRoute(
+                                //     builder: (BuildContext context) {
+                                //   return HomeScreen(
+                                //     selectedPage: 1,
+                                //     userModel: userModelList[index],
+                                //     index: index,
+                                //   );
+                                // }));
                               },
                               child: const Icon(
                                 Icons.edit,
