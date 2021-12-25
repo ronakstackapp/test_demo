@@ -30,6 +30,7 @@ class CommonTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       readOnly: readOnly??false,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       onTap: onChangedOnTap,
       validator: validatorOnTap,
       controller: controller,

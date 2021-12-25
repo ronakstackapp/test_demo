@@ -23,7 +23,7 @@ String? validatePrefDate(String value, BuildContext context,String dateOfBirth ,
   }
   else {
     if(isAdult == false){
-    return "adult only allowed";
+    return "Age Must Be 18";
   }
   else {
     return null;
@@ -35,7 +35,7 @@ String? passwordValidation(String? value,String? text) {
   if (value == null || value.isEmpty) {
     return 'Enter PassWord';
   } else if (text!.length <= 5) {
-    return 'Max 6 character PassWord';
+    return 'min 6 character PassWord';
   }
   else {
     return null;
@@ -45,12 +45,12 @@ String? passwordValidation(String? value,String? text) {
 confirmPassWordValidation
       (String? value,String? text,String textMatch) {
     if (value == null || value.isEmpty) {
-      return 'Enter PassWord';
+      return 'Enter Confirm PassWord';
     } else if (text !=
         textMatch) {
-      return 'Password not Match';
+      return 'Confirm Password not Match';
     } else if (textMatch.length <= 5) {
-      return 'Max 6 character PassWord';
+      return 'min 6 character PassWord';
     } else {
       return null;
     }
@@ -91,7 +91,8 @@ String? loginPasswordValidation(String? value) {
   if (value == null || value.isEmpty) {
     return 'Enter PassWord';
   } else if (value.length <= 5) {
-    return 'Max 6 character PassWord';
+   // return 'Min 6 character PassWord';
+    return 'Incorrect Password';
   }
   else {
     return null;

@@ -30,6 +30,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         vsync: this, length: 3, initialIndex: widget.selectedPage);
 
 
+
     if (widget.userModel != null) {
       // ignore: avoid_print
       print("${widget.userModel!.name}");
@@ -41,6 +42,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     tabController.dispose();
     super.dispose();
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         ),
       ),
       body: TabBarView(
-        physics: const NeverScrollableScrollPhysics(),
+      //  physics: const NeverScrollableScrollPhysics(),
         children: [
            RegisterScreen(userModel: widget.userModel,),
           FillDataScreen(

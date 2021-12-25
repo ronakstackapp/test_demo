@@ -131,7 +131,7 @@ class _FillDataScreenState extends State<FillDataScreen> {
                       child: CommonTextField(
                         controller: passwordController,
                         hint: "Enter Password",
-                        obscureText: password ? false : true,
+                        obscureText: !password ? false : true,
                         // inputFormatters: [
                         //    FilteringTextInputFormatter.digitsOnly,
                         //    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
@@ -158,7 +158,7 @@ class _FillDataScreenState extends State<FillDataScreen> {
                       child: CommonTextField(
                         controller: confirmPasswordController,
                         hint: "Enter Confirm Password",
-                        obscureText: confirmPassword ? false : true,
+                        obscureText: !confirmPassword ? false : true,
                         suffixIcon: InkWell(
                             onTap: () {
                               setState(() {

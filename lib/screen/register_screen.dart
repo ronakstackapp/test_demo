@@ -13,9 +13,12 @@ class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key, this.userModel}) : super(key: key);
   final UserModel? userModel;
 
+
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
 }
+
+
 
 class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController emailController = TextEditingController();
@@ -24,16 +27,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   String? userName;
+  // String? email;
+  // String? yourPassword;
 
   @override
   void initState() {
     FocusManager.instance.primaryFocus?.unfocus();
     // TODO: implement initState
+    userName = "";
+     // emailController.text = email??"";
+     // passwordController.text = yourPassword??"";
+     // print("Controller -->${emailController.text}");
+
     if (widget.userModel != null) {
       print("RegisterScreen --> initState --> userModel!=null ");
     }
     super.initState();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +78,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       child: CommonTextField(
                         controller: passwordController,
                         hint: "Enter Your Password",
-                        obscureText: password ? false : true,
+                        obscureText: !password ? false : true,
                         // textInputType: TextInputType.phone,
                         validatorOnTap: (value) =>
                             loginPasswordValidation(value),
@@ -77,11 +88,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 password = !password;
                               });
                             },
-                            child: password
-                                ? const Icon(Icons.remove_red_eye,
-                                    color: Colors.blue)
-                                : const Icon(CupertinoIcons.eye_slash,
-                                    color: Colors.blue)),
+                            child:
+                            // password
+                            //     ? const Icon(Icons.remove_red_eye,
+                            //         color: Colors.blue)
+                            //
+                             //   :
+                            Icon(Icons.remove_red_eye,
+
+                                    color: password ?  Colors.blue[400] : Colors.blue)
+
+
+
+
+                        ),
                       ),
                     ),
                     const SizedBox(
@@ -124,6 +144,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 orElse: () => UserModel(password: ""),
                               );
                                userName = userModel.name;
+                              // yourPassword = passwordController.text;
+                              // email = emailController.text;
                               _showDialog();
                             }
                             else {
@@ -233,12 +255,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
             TextButton(
                 onPressed: () {
                   print("Show Dialog -->>");
+                  // yourPassword = passwordController.text;
+                  // email = emailController.text;
+                  Navigator.pop(context);
 
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              const HomeScreen(selectedPage: 2)),
-                      (Route<dynamic> route) => false);
+                  // Navigator.of(context).pushAndRemoveUntil(
+                  //     MaterialPageRoute(
+                  //         builder: (context) =>
+                  //             const HomeScreen(selectedPage: 2)),
+                  //     (Route<dynamic> route) => false);
 
                   // Navigator.of(context)
                   //     .push(MaterialPageRoute(builder: (BuildContext context) {
