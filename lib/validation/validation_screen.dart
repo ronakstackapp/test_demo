@@ -16,6 +16,7 @@ String? emailValidation(String? value) {
 }
 
 String? validatePrefDate(String value, BuildContext context,String dateOfBirth ,bool? isAdult ) {
+  // ignore: avoid_print
   print("isAdult -->>> $isAdult");
   if (dateOfBirth.isEmpty) {
     return "Enter DoB";

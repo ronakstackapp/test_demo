@@ -68,7 +68,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         controller: passwordController,
                         hint: "Enter Your Password",
                         obscureText: password ? false : true,
-                       // textInputType: TextInputType.phone,
+                        // textInputType: TextInputType.phone,
                         validatorOnTap: (value) =>
                             loginPasswordValidation(value),
                         suffixIcon: InkWell(
@@ -92,40 +92,65 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       pressedButton: () {
                         FocusScope.of(context).requestFocus(FocusNode());
 
-                       if(_key.currentState!.validate()){
-                        bool isEmailAvailable =  userModelList.any((element) => element.email == emailController.text);
+                        if (_key.currentState!.validate()) {
+                          bool isEmailAvailable = userModelList.any((element) =>
+                              element.email == emailController.text);
 
+                          if (isEmailAvailable) {
+                            // UserModel userModel = userModelList.firstWhere(
+                            //     (element) {
+                            //     return ( element.email == emailController.text) && (element.password == passwordController.text);
+                            //     },
+                            //
+                            //     orElse: () => UserModel(name: ''));
+                            // print("userModel -- password-->>> ${userModel.name}");
+                            //
+                            // // ignore: unnecessary_null_comparison
+                            // if(userModel != null ){
+                            //   userName = userModel.name;
+                            //   _showDialog();
 
-                        if(isEmailAvailable){
-                          bool isPassWordAvailable =  userModelList.any((element) => element.password == passwordController.text);
-                          if(isPassWordAvailable){
-                           // userName = element.name;
-                            _showDialog();
-                          }else {
+                            ///
+                            bool isPassWordAvailable = userModelList.any(
+                                (element) =>
+                                   ( element.password ==
+                                    passwordController.text) && (element.email == emailController.text) );
+
+                            if (isPassWordAvailable) {
+
+                              UserModel userModel = userModelList.firstWhere(
+                                (element) =>
+                                    element.password == passwordController.text,
+                                orElse: () => UserModel(password: ""),
+                              );
+                               userName = userModel.name;
+                              _showDialog();
+                            }
+                            else {
+
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text(
+                                  "Incorrect password",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                backgroundColor: Colors.red,
+                              ));
+                            }
+                          } else {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(
                               content: Text(
-                                "Incorrect password",
+                                "Incorrect Email address",
                                 style: TextStyle(color: Colors.white),
                               ),
                               backgroundColor: Colors.red,
                             ));
                           }
-                        }else{
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(const SnackBar(
-                            content: Text(
-                              "Incorrect Email address",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            backgroundColor: Colors.red,
-                          ));
-                        }
-                    //   UserModel userModel =  userModelList.firstWhere((element) =>  element.email == emailController.text,orElse: ()=> UserModel(name: 'no'));
-                         // ignore: avoid_function_literals_in_foreach_calls
+                          //   UserModel userModel =  userModelList.firstWhere((element) =>  element.email == emailController.text,orElse: ()=> UserModel(name: 'no'));
+                          // ignore: avoid_function_literals_in_foreach_calls
 
-
-                       /*  userModelList.forEach((element) async {
+                          /*  userModelList.forEach((element) async {
                            print( "register -- element.email-->> ${element.email}");
                            if (element.email == emailController.text && emailController.text.trim().isNotEmpty) {
                              print("${element.email}");
@@ -184,8 +209,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                            }
                          });
                          */
-                       }
-
+                        }
                       },
                     ),
                   ],
@@ -198,22 +222,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-
-   _showDialog() {
-
-  return  showDialog(
+  _showDialog() {
+    return showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text("WelCome!"),
-          content:  Text("Hello $userName"),
+          content: Text("Hello $userName"),
           actions: <Widget>[
             TextButton(
                 onPressed: () {
                   print("Show Dialog -->>");
 
-                  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-                  const  HomeScreen(selectedPage: 2)), (Route<dynamic> route) => false);
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              const HomeScreen(selectedPage: 2)),
+                      (Route<dynamic> route) => false);
 
                   // Navigator.of(context)
                   //     .push(MaterialPageRoute(builder: (BuildContext context) {

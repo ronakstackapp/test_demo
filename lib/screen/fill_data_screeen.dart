@@ -256,7 +256,7 @@ class _FillDataScreenState extends State<FillDataScreen> {
         selectedDate = picked;
         dobController.text = DateFormat('dd/MM/yyyy').format(selectedDate!);
 
-        print('selecteddATE --> ${selectedDate}');
+        // print('selecteddATE --> ${selectedDate}');
 
         if (DateTime.now().year - selectedDate!.year > 18) {
           print("adult");
