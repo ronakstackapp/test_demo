@@ -5,10 +5,10 @@ String? emailValidation(String? value) {
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
   RegExp regex = RegExp(pattern);
   if (value == null || value.isEmpty) {
-    return 'Enter email address';
+    return 'Enter Email Address';
   }
   else if (!regex.hasMatch(value)) {
-    return 'Enter valid email address';
+    return 'Enter Valid Email Address';
   }
   else {
     return null;
@@ -35,7 +35,7 @@ String? passwordValidation(String? value,String? text) {
   if (value == null || value.isEmpty) {
     return 'Enter PassWord';
   } else if (text!.length <= 5) {
-    return 'min 6 character PassWord';
+    return 'Enter Min 6 Character PassWord';
   }
   else {
     return null;
@@ -48,9 +48,9 @@ confirmPassWordValidation
       return 'Enter Confirm PassWord';
     } else if (text !=
         textMatch) {
-      return 'Confirm Password not Match';
+      return 'Confirm Password Not Match';
     } else if (textMatch.length <= 5) {
-      return 'min 6 character PassWord';
+      return 'Enter Min 6 Character PassWord';
     } else {
       return null;
     }
@@ -76,10 +76,10 @@ String? loginEmailValidation(String? value) {
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
   RegExp regex = RegExp(pattern);
   if (value == null || value.isEmpty) {
-    return 'Enter email address';
+    return 'Enter Email Address';
   }
   else if (!regex.hasMatch(value)) {
-    return 'Enter valid email address';
+    return 'Enter Valid Email Address';
   }
   else {
     return null;
@@ -89,7 +89,7 @@ String? loginEmailValidation(String? value) {
 
 String? loginPasswordValidation(String? value) {
   if (value == null || value.isEmpty) {
-    return 'Enter PassWord';
+    return 'Enter Your Password';
   } else if (value.length <= 5) {
    // return 'Min 6 character PassWord';
     return 'Incorrect Password';
@@ -98,3 +98,19 @@ String? loginPasswordValidation(String? value) {
     return null;
   }
 }
+
+//
+// TabBarView(
+// physics: const ScrollPhysics(),
+// dragStartBehavior: DragStartBehavior.down,
+// children: [
+// RegisterScreen(userModel: widget.userModel,),
+// // ignore: prefer_const_constructors
+// FillDataScreen(
+// // userModel: widget.userModel,
+// // listIndex: widget.index,
+// ),
+// const ShowDataScreen(),
+// ],
+// controller: tabController,
+// );

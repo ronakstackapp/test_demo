@@ -4,10 +4,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:test_demo/model/usermodel.dart';
 import 'package:test_demo/screen/fill_data_screeen.dart';
+// ignore: unused_import
 import 'package:test_demo/screen/home_screen.dart';
 import 'package:test_demo/validation/validation_screen.dart';
 
 import '../common_widget.dart';
+
+String email = "";
+String yourPassword ="";
+
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key, this.userModel}) : super(key: key);
@@ -17,27 +22,25 @@ class RegisterScreen extends StatefulWidget {
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
 }
-
-
-
 class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  bool password = true;
 
+  bool password = true;
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   String? userName;
-  // String? email;
-  // String? yourPassword;
+
 
   @override
   void initState() {
     FocusManager.instance.primaryFocus?.unfocus();
     // TODO: implement initState
     userName = "";
-     // emailController.text = email??"";
-     // passwordController.text = yourPassword??"";
-     // print("Controller -->${emailController.text}");
+
+    if((email != "" && yourPassword != "")){
+      emailController.text = email;
+      passwordController.text = yourPassword;
+    }
 
     if (widget.userModel != null) {
       print("RegisterScreen --> initState --> userModel!=null ");
@@ -145,7 +148,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               );
                                userName = userModel.name;
                               // yourPassword = passwordController.text;
-                              // email = emailController.text;
+                               email = emailController.text;
+                              yourPassword = passwordController.text;
                               _showDialog();
                             }
                             else {

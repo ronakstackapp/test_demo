@@ -99,20 +99,13 @@ class _ShowDataScreenState extends State<ShowDataScreen> {
                           children: [
                             InkWell(
                               onTap: () {
+                                tabController!.index = 1;
+                                userModelg = userModelList[index];
+                                indexg = index;
+                                // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) {
+                                //   return HomeScreen(selectedPage: 1,userModel: userModelList[index],index: index,);
+                                // }), (Route<dynamic> route) => false);
 
-                                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-                                  HomeScreen( selectedPage: 1,
-                                         userModel: userModelList[index],
-                                         index: index,)), (Route<dynamic> route) => false);
-
-                                // Navigator.of(context).push(MaterialPageRoute(
-                                //     builder: (BuildContext context) {
-                                //   return HomeScreen(
-                                //     selectedPage: 1,
-                                //     userModel: userModelList[index],
-                                //     index: index,
-                                //   );
-                                // }));
                               },
                               child: const Icon(
                                 Icons.edit,

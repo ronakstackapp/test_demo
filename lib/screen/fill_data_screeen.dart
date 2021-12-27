@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_print, duplicate_ignore
 
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,12 +12,17 @@ import 'package:test_demo/validation/validation_screen.dart';
 
 import 'home_screen.dart';
 
-class FillDataScreen extends StatefulWidget {
-  final UserModel? userModel;
-  final int? index;
+UserModel? userModelg;
+int? indexg;
 
-  const FillDataScreen({Key? key, this.userModel, this.index})
-      : super(key: key);
+class FillDataScreen extends StatefulWidget {
+  const FillDataScreen({Key? key}) : super(key: key);
+
+  // final UserModel? userModel;
+  // final int? listIndex;
+  //
+  // const FillDataScreen({Key? key, this.userModel, this.listIndex})
+  //     : super(key: key);
 
   @override
   _FillDataScreenState createState() => _FillDataScreenState();
@@ -43,15 +50,15 @@ class _FillDataScreenState extends State<FillDataScreen> {
   void initState() {
     FocusManager.instance.primaryFocus?.unfocus();
     // TODO: implement initState
-    if (widget.userModel != null) {
-      nameController.text = widget.userModel!.name!;
-      emailController.text = widget.userModel!.email!;
-      selectedDate =  widget.userModel!.dob;
+    if (userModelg != null) {
+      print("aaaaaa");
+      nameController.text = userModelg!.name!;
+      emailController.text = userModelg!.email!;
+       selectedDate = userModelg!.dob;
       dobController.text = DateFormat('dd/MM/yyyy').format(selectedDate!);
-      passwordController.text = widget.userModel!.password!;
-      confirmPasswordController.text = widget.userModel!.password!;
-      print("initState  -- index --->> ${widget.index}");
-      print("picked --->> DoB${widget.userModel!.dob}");
+      passwordController.text = userModelg!.password!;
+      confirmPasswordController.text = userModelg!.password!;
+      print("picked --->> DoB${userModelg!.dob}");
 
       if (DateTime.now().year - selectedDate!.year > 18) {
         print("adult");
@@ -62,6 +69,12 @@ class _FillDataScreenState extends State<FillDataScreen> {
     }
     super.initState();
   }
+
+  // @override
+  // void dispose() {
+  //   tabController!.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -181,39 +194,46 @@ class _FillDataScreenState extends State<FillDataScreen> {
                     ),
                     Button(
                       buttonText:
-                          widget.userModel == null ? "Register" : "Update",
+                      userModelg == null ? "Register" : "Update",
                       pressedButton: () {
                         FocusScope.of(context).requestFocus(FocusNode());
                         UserModel userModel = UserModel(
                           name: nameController.text,
                           email: emailController.text,
-                          dob:selectedDate,
+                          dob: selectedDate,
                           password: passwordController.text,
                         );
-                        print("userModelList -- selectedDate -->>$selectedDate");
+
 
                         if (_key.currentState!.validate()) {
+
                           FocusScope.of(context).requestFocus(FocusNode());
-                          if (widget.userModel == null) {
+                          if (userModelg == null) {
                             userModelList.add(userModel);
                           } else {
-                            userModelList.removeAt(widget.index!);
-                            userModelList.insert(widget.index!, userModel);
+                            userModelList.removeAt(indexg!);
+                            userModelList.insert(indexg!, userModel);
                           }
-                          widget.userModel == null;
+                          print("userModelList -->> 0 ");
 
-                          // tabController.index =2;
-                          // Navigator.of(context).push(MaterialPageRoute(
-                          //     builder: (BuildContext context) {
-                          //   return const HomeScreen(selectedPage: 2);
-                          // }));
+                          print("userModelList -->> 1");
+                      // tabController!.index = 2;
 
-                         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-                           const  HomeScreen(selectedPage: 2)), (Route<dynamic> route) => false);
+
+
+                          tabController!.animateTo(2,duration: const Duration(milliseconds: 1000),curve: Curves.easeInCirc);
+
+
+                          // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                          //  const  HomeScreen(selectedPage: 2)), (Route<dynamic> route) => false);
 
                           // ignore: avoid_print
                           print("userModelList -->>${userModelList.length}");
                           print("userModelList -->>${userModelList[0].email}");
+
+                          Future.delayed(const Duration(milliseconds: 1000),(){
+                            return  userModelg = null;
+                          });
                         }
                       },
                     ),
@@ -231,7 +251,7 @@ class _FillDataScreenState extends State<FillDataScreen> {
   }
 
   _selectDate(BuildContext context) async {
-     DateTime? picked = await showDatePicker(
+    DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(1800, 8),
@@ -249,7 +269,7 @@ class _FillDataScreenState extends State<FillDataScreen> {
       //   );
       // },
     );
-     print("picked 00-->>$picked");
+    print("picked 00-->>$picked");
     if (picked != null && picked != selectedDate) {
       print("picked 01-->>$picked");
       setState(() {

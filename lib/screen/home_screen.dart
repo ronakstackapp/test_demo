@@ -1,9 +1,14 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:test_demo/model/usermodel.dart';
 import 'package:test_demo/screen/register_screen.dart';
 import 'package:test_demo/screen/show_data_screen.dart';
 
 import 'fill_data_screeen.dart';
+
+
+TabController? tabController;
+
 
 class HomeScreen extends StatefulWidget {
   final UserModel? userModel;
@@ -18,18 +23,29 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-//late TabController tabController;
+
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
-   late TabController tabController;
+ //  late TabController tabController;
+   late PageController pageController;
 
   @override
   void initState() {
     super.initState();
     tabController = TabController(
-        vsync: this, length: 3, initialIndex: widget.selectedPage);
+        vsync: this, length: 3,);
 
+    tabController!.addListener(() {
+      print("widget.selectedPage -->.${tabController!.index}");
+    tabController!.animateTo(tabController!.index,duration: const Duration(milliseconds: 2000),curve: Curves.easeInCirc);
+    //  tabController!.animateTo(widget.selectedPage,curve: Curves.bounceIn);
+    //  tabController!.animateTo(widget.selectedPage,curve: Curves.easeInOutCubic);
 
+      if(tabController!.index == 1){
+        userModelg = null;
+      }
+
+    });
 
     if (widget.userModel != null) {
       // ignore: avoid_print
@@ -37,11 +53,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     }
   }
 
-  @override
-  void dispose() {
-    tabController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   tabController!.dispose();
+  //   super.dispose();
+  // }
+
+
 
 
 
@@ -66,12 +84,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         ),
       ),
       body: TabBarView(
-      //  physics: const NeverScrollableScrollPhysics(),
+      physics: const ScrollPhysics(),
+        dragStartBehavior: DragStartBehavior.down,
         children: [
            RegisterScreen(userModel: widget.userModel,),
+          // ignore: prefer_const_constructors
           FillDataScreen(
-            userModel: widget.userModel,
-            index: widget.index,
+            // userModel: widget.userModel,
+            // listIndex: widget.index,
           ),
           const ShowDataScreen(),
         ],
