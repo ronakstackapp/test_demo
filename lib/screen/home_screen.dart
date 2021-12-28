@@ -5,6 +5,7 @@ import 'package:test_demo/screen/register_screen.dart';
 import 'package:test_demo/screen/show_data_screen.dart';
 
 import 'fill_data_screeen.dart';
+import 'pageview_home_screen.dart';
 
 
 TabController? tabController;
@@ -27,7 +28,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
  //  late TabController tabController;
-   late PageController pageController;
+ //  late PageController pageController;
 
   @override
   void initState() {
@@ -86,14 +87,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       body: TabBarView(
       physics: const ScrollPhysics(),
         dragStartBehavior: DragStartBehavior.down,
-        children: [
-           RegisterScreen(userModel: widget.userModel,),
+        children:const [
+          RegisterScreen(),
+          // RegisterScreen(userModel: widget.userModel,),
           // ignore: prefer_const_constructors
           FillDataScreen(
             // userModel: widget.userModel,
             // listIndex: widget.index,
           ),
-          const ShowDataScreen(),
+           ShowDataScreen(),
         ],
         controller: tabController,
       ),

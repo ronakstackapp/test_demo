@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+
 // ignore: unused_import
 import 'package:intl/intl.dart';
-import 'package:test_demo/screen/home_screen.dart';
+import 'package:test_demo/screen/pageview_home_screen.dart';
 
 import 'fill_data_screeen.dart';
+import 'home_screen.dart';
 
 class ShowDataScreen extends StatefulWidget {
   const ShowDataScreen({Key? key}) : super(key: key);
@@ -13,7 +15,6 @@ class ShowDataScreen extends StatefulWidget {
 }
 
 class _ShowDataScreenState extends State<ShowDataScreen> {
-
   @override
   void initState() {
     FocusManager.instance.primaryFocus?.unfocus();
@@ -36,6 +37,7 @@ class _ShowDataScreenState extends State<ShowDataScreen> {
           child: ListView.builder(
             itemCount: userModelList.length,
             itemBuilder: (BuildContext context, int index) {
+              userModelList.sort((a, b) => a.name!.compareTo(b.name!));
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -74,7 +76,7 @@ class _ShowDataScreenState extends State<ShowDataScreen> {
                                   const SizedBox(
                                     width: 5,
                                   ),
-                                //  Text("${userModelList[index].dob}")
+                                  //  Text("${userModelList[index].dob}")
                                   Text(DateFormat('dd/MM/yyyy').format(
                                       userModelList[index].dob ??
                                           DateTime.now())),
@@ -99,13 +101,26 @@ class _ShowDataScreenState extends State<ShowDataScreen> {
                           children: [
                             InkWell(
                               onTap: () {
-                                tabController!.index = 1;
+                                ///pageVIew
+                                print("tab inderx ---- 0 -- $tabInt");
+                                pageController!.animateToPage(1,
+                                    duration:
+                                        const Duration(milliseconds: 1000),
+                                    curve: Curves.ease);
+                                Future.delayed( const Duration(milliseconds: 500),(){
+                                  counter.value = 1;
+                                });
+
+                                ///tabbar
+                               //  tabController!.index = 1;
+
+                                print("tab inderx ---- 1 -- $tabInt");
                                 userModelg = userModelList[index];
                                 indexg = index;
                                 // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) {
                                 //   return HomeScreen(selectedPage: 1,userModel: userModelList[index],index: index,);
                                 // }), (Route<dynamic> route) => false);
-
+                                setState(() {});
                               },
                               child: const Icon(
                                 Icons.edit,
@@ -114,9 +129,10 @@ class _ShowDataScreenState extends State<ShowDataScreen> {
                             ),
                             InkWell(
                               onTap: () {
-                                setState(() {
-                                  userModelList.removeAt(index);
-                                });
+                                _showDialog(index);
+                                // setState(() {
+                                //   userModelList.removeAt(index);
+                                // });
                               },
                               child: const Icon(
                                 Icons.delete,
@@ -136,6 +152,37 @@ class _ShowDataScreenState extends State<ShowDataScreen> {
       ),
     );
   }
+
+  _showDialog(int? indexRemove) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Alert!",style: TextStyle(color: Colors.red),),
+          content:const Text("Are you sure you want to delete this User Details?"),
+          actions: <Widget>[
+            TextButton(
+                onPressed: () {
+                  print("Show Dialog -->>");
+                  Navigator.pop(context);
+                },
+                child: const Text("Back")),
+            TextButton(
+                onPressed: () {
+                  print("Show Dialog -->>");
+                  setState(() {
+                    userModelList.removeAt(indexRemove!);
+                    Navigator.pop(context);
+                  });
+                //  Navigator.pop(context);
+                },
+                child: const Text("Delete",style: TextStyle(color: Colors.red),)),
+          ],
+        );
+      },
+    );
+  }
+
 }
 
 class _RowData extends StatelessWidget {
@@ -165,4 +212,5 @@ class _RowData extends StatelessWidget {
       ],
     );
   }
+
 }

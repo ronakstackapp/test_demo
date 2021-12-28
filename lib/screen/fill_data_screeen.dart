@@ -1,6 +1,6 @@
 // ignore_for_file: avoid_print, duplicate_ignore
 
-import 'dart:developer';
+
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,9 +8,11 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:test_demo/common_widget.dart';
 import 'package:test_demo/model/usermodel.dart';
+import 'package:test_demo/screen/pageview_home_screen.dart';
 import 'package:test_demo/validation/validation_screen.dart';
 
 import 'home_screen.dart';
+
 
 UserModel? userModelg;
 int? indexg;
@@ -217,13 +219,22 @@ class _FillDataScreenState extends State<FillDataScreen> {
                           print("userModelList -->> 0 ");
 
                           print("userModelList -->> 1");
-                      // tabController!.index = 2;
+                          // tabController!.index = 2;
+
+                          ///tabbar
+                        //  tabController!.animateTo(2,duration: const Duration(milliseconds: 1000),curve: Curves.easeInCirc);
 
 
+                          ///pageView
+                          pageController!.animateToPage(
+                              2, duration: const Duration(milliseconds: 1000),
+                              curve: Curves.ease);
+                          Future.delayed( const Duration(milliseconds: 500),(){
+                            counter.value = 2;
+                          });
 
-                          tabController!.animateTo(2,duration: const Duration(milliseconds: 1000),curve: Curves.easeInCirc);
 
-
+                          ///navigator
                           // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
                           //  const  HomeScreen(selectedPage: 2)), (Route<dynamic> route) => false);
 
@@ -296,4 +307,8 @@ class _FillDataScreenState extends State<FillDataScreen> {
 //     }));
 //   }
 // }
+
+
+
+
 }

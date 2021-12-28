@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+
+import 'screen/pageview_home_screen.dart';
+
 class CommonTextField extends StatelessWidget {
   final TextEditingController? controller;
   final String? hint;
@@ -73,5 +76,52 @@ class Button extends StatelessWidget {
             style: const TextStyle(color: Colors.white, fontSize: 20),
           ),
         ));
+  }
+}
+
+
+class tabWidget extends StatelessWidget {
+  const tabWidget({
+    Key? key, this.inkWellTap, this.intColor, this.iconWidget,
+  }) : super(key: key);
+
+  final GestureTapCallback? inkWellTap;
+  final int? intColor;
+  final Widget? iconWidget;
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Column(
+        children: [
+          InkWell(
+            onTap: inkWellTap,
+            child:  SizedBox(
+              width: double.infinity,
+              height: 45,
+              child:iconWidget
+            ),
+          ),
+          ValueListenableBuilder(
+            valueListenable: counter,
+            builder:
+                (BuildContext context, int value, Widget? child) {
+              print("ValueListenableBuilder-->>$value");
+              return Container(
+                width: double.infinity,
+                height: 2,
+                decoration: BoxDecoration(
+                    color: value == intColor ? Colors.white : Colors.blue,
+                    borderRadius: BorderRadius.circular(4)),
+              );
+            },
+            // child: Container(width: double.infinity,height: 2,decoration: BoxDecoration(
+            //     color: tabInt == 2?Colors.white : Colors.blue,
+            //     borderRadius: BorderRadius.circular(4)),),
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:test_demo/screen/register_screen.dart';
-
 import 'screen/home_screen.dart';
+import 'screen/pageview_home_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,11 +18,14 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        hoverColor: Colors.transparent,
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
        fontFamily: "EB Garamond",
       ),
-      home: const HomeScreen(selectedPage: 1),
+      home:  TestWidget(),
     );
   }
 }
