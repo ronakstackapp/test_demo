@@ -98,25 +98,29 @@
 // }
 
 import 'package:flutter/material.dart';
-import 'package:test_demo/screen/register_screen.dart';
-import 'package:test_demo/screen/show_data_screen.dart';
+import 'package:test_demo/screen/array_data_screen/register_screen.dart';
+// ignore: unused_import
+import 'package:test_demo/screen/array_data_screen/show_data_screen.dart';
+import 'package:test_demo/screen/sqlite_data_screen/sqlite_register_data_screen.dart';
 
-import '../common_widget.dart';
+import '../../common_widget.dart';
 import 'fill_data_screeen.dart';
+import '../sqlite_data_screen/sqlite_fill_data_screen.dart';
+import '../sqlite_data_screen/sqlite_show_data_screen.dart';
 
 PageController? pageController;
 int? tabInt = 0;
 ValueNotifier<int> counter = ValueNotifier(0);
 
 class TestWidget extends StatefulWidget {
-  TestWidget({Key? key}) : super(key: key);
+  const TestWidget({Key? key}) : super(key: key);
 
   @override
   _TestWidgetState createState() => _TestWidgetState();
 }
 
 class _TestWidgetState extends State<TestWidget> {
-  int _selectedIndex = 0;
+  // int _selectedIndex = 0;
 
   // late PageController _pageController;
 
@@ -124,10 +128,11 @@ class _TestWidgetState extends State<TestWidget> {
   void initState() {
     super.initState();
     pageController = PageController();
+    // ignore: avoid_print
     print("indext tab -->$tabInt");
 
     pageController!.addListener(() {
-      print("pageController -- inistate -->>${pageController!.page}");
+      // print("pageController -- inistate -->>${pageController!.page}");
       if(pageController!.page ==0){
         counter.value=0;
       }else if( pageController!.page==1){
@@ -144,16 +149,17 @@ class _TestWidgetState extends State<TestWidget> {
     super.dispose();
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Tab Bar"),
+        title: const Text("Tab Bar"),
         bottom: PreferredSize(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               // alignment: MainAxisAlignment.center,
               children: <Widget>[
-                tabWidget(
+                TabWidget(
                   inkWellTap: () {
                     pageController!.animateToPage(0,
                         duration: const Duration(milliseconds: 1000),
@@ -166,7 +172,7 @@ class _TestWidgetState extends State<TestWidget> {
                   ),
                   intColor: 0,
                 ),
-                tabWidget(
+                TabWidget(
                   inkWellTap: () {
                     pageController!.animateToPage(1,
                         duration: const Duration(milliseconds: 1000),
@@ -179,7 +185,7 @@ class _TestWidgetState extends State<TestWidget> {
                   ),
                   intColor: 1,
                 ),
-                tabWidget(
+                TabWidget(
                   inkWellTap: () {
                     pageController!.animateToPage(2,
                         duration: const Duration(milliseconds: 1000),
@@ -199,16 +205,17 @@ class _TestWidgetState extends State<TestWidget> {
       ),
       body: PageView(
         controller: pageController,
-        scrollBehavior: ScrollBehavior(),
+        scrollBehavior:const ScrollBehavior(),
         children: const [
-          RegisterScreen(),
-          // RegisterScreen(userModel: widget.userModel,),
-          // ignore: prefer_const_constructors
-          FillDataScreen(
-              // userModel: widget.userModel,
-              // listIndex: widget.index,
-              ),
-          ShowDataScreen(),
+           ///Sqlite
+          SqliteRegisterScreen(),
+          SqliteFillDataScreen(),
+          SqliteShowDataScreen(),
+
+          ///pageView
+          // RegisterScreen(),
+          // FillDataScreen(),
+          // ShowDataScreen(),
         ],
       ),
     );

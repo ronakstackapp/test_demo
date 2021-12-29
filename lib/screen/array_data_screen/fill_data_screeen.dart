@@ -1,18 +1,14 @@
 // ignore_for_file: avoid_print, duplicate_ignore
 
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:test_demo/common_widget.dart';
 import 'package:test_demo/model/usermodel.dart';
-import 'package:test_demo/screen/pageview_home_screen.dart';
+import 'package:test_demo/screen/array_data_screen/pageview_home_screen.dart';
+import 'package:test_demo/sqlite/sqlite_helper.dart';
 import 'package:test_demo/validation/validation_screen.dart';
-
-import 'home_screen.dart';
-
 
 UserModel? userModelg;
 int? indexg;
@@ -46,6 +42,8 @@ class _FillDataScreenState extends State<FillDataScreen> {
   bool password = true;
   bool isAdult = false;
 
+  final dbHelper = DataBaseManager.instance;
+
   // DateTime? picked;
 
   @override
@@ -53,10 +51,9 @@ class _FillDataScreenState extends State<FillDataScreen> {
     FocusManager.instance.primaryFocus?.unfocus();
     // TODO: implement initState
     if (userModelg != null) {
-      print("aaaaaa");
       nameController.text = userModelg!.name!;
       emailController.text = userModelg!.email!;
-       selectedDate = userModelg!.dob;
+      selectedDate = userModelg!.dob;
       dobController.text = DateFormat('dd/MM/yyyy').format(selectedDate!);
       passwordController.text = userModelg!.password!;
       confirmPasswordController.text = userModelg!.password!;
@@ -195,9 +192,8 @@ class _FillDataScreenState extends State<FillDataScreen> {
                       height: 15,
                     ),
                     Button(
-                      buttonText:
-                      userModelg == null ? "Register" : "Update",
-                      pressedButton: () {
+                      buttonText: userModelg == null ? "Register" : "Update",
+                      pressedButton: () async {
                         FocusScope.of(context).requestFocus(FocusNode());
                         UserModel userModel = UserModel(
                           name: nameController.text,
@@ -206,33 +202,33 @@ class _FillDataScreenState extends State<FillDataScreen> {
                           password: passwordController.text,
                         );
 
-
                         if (_key.currentState!.validate()) {
-
+                          print("userModel -->>${userModel.dob}");
                           FocusScope.of(context).requestFocus(FocusNode());
                           if (userModelg == null) {
                             userModelList.add(userModel);
+
+                            print("inserted row id -->> insert");
+                            final id = await dbHelper.insert(userModel);
+                            print('inserted row id: $id');
                           } else {
                             userModelList.removeAt(indexg!);
                             userModelList.insert(indexg!, userModel);
                           }
-                          print("userModelList -->> 0 ");
 
-                          print("userModelList -->> 1");
+
                           // tabController!.index = 2;
 
                           ///tabbar
-                        //  tabController!.animateTo(2,duration: const Duration(milliseconds: 1000),curve: Curves.easeInCirc);
-
+                          //  tabController!.animateTo(2,duration: const Duration(milliseconds: 1000),curve: Curves.easeInCirc);
 
                           ///pageView
-                          pageController!.animateToPage(
-                              2, duration: const Duration(milliseconds: 1000),
+                          pageController!.animateToPage(2,
+                              duration: const Duration(milliseconds: 1000),
                               curve: Curves.ease);
-                          Future.delayed( const Duration(milliseconds: 500),(){
+                          Future.delayed(const Duration(milliseconds: 500), () {
                             counter.value = 2;
                           });
-
 
                           ///navigator
                           // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
@@ -242,8 +238,9 @@ class _FillDataScreenState extends State<FillDataScreen> {
                           print("userModelList -->>${userModelList.length}");
                           print("userModelList -->>${userModelList[0].email}");
 
-                          Future.delayed(const Duration(milliseconds: 1000),(){
-                            return  userModelg = null;
+                          Future.delayed(const Duration(milliseconds: 1000),
+                              () {
+                            return userModelg = null;
                           });
                         }
                       },
@@ -307,8 +304,5 @@ class _FillDataScreenState extends State<FillDataScreen> {
 //     }));
 //   }
 // }
-
-
-
 
 }

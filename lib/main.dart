@@ -1,9 +1,9 @@
 // ignore_for_file: unused_import
 
 import 'package:flutter/material.dart';
-import 'package:test_demo/screen/register_screen.dart';
+import 'package:test_demo/screen/array_data_screen/register_screen.dart';
 import 'screen/home_screen.dart';
-import 'screen/pageview_home_screen.dart';
+import 'screen/array_data_screen/pageview_home_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
        fontFamily: "EB Garamond",
       ),
-      home:  TestWidget(),
+      home: const TestWidget(),
     );
   }
 }

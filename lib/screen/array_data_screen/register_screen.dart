@@ -3,12 +3,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:test_demo/model/usermodel.dart';
-import 'package:test_demo/screen/fill_data_screeen.dart';
+import 'package:test_demo/screen/array_data_screen/fill_data_screeen.dart';
 // ignore: unused_import
 import 'package:test_demo/screen/home_screen.dart';
 import 'package:test_demo/validation/validation_screen.dart';
 
-import '../common_widget.dart';
+import '../../common_widget.dart';
 
 String email = "";
 String yourPassword ="";
