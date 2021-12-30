@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:test_demo/screen/pageview_home_screen.dart';
 
 import 'fill_data_screeen.dart';
+// ignore: unused_import
 import 'home_screen.dart';
 
 class ShowDataScreen extends StatefulWidget {
@@ -102,6 +103,7 @@ class _ShowDataScreenState extends State<ShowDataScreen> {
                             InkWell(
                               onTap: () {
                                 ///pageVIew
+                                // ignore: avoid_print
                                 print("tab inderx ---- 0 -- $tabInt");
                                 pageController!.animateToPage(1,
                                     duration:
@@ -114,6 +116,7 @@ class _ShowDataScreenState extends State<ShowDataScreen> {
                                 ///tabbar
                                //  tabController!.index = 1;
 
+                                // ignore: avoid_print
                                 print("tab inderx ---- 1 -- $tabInt");
                                 userModelg = userModelList[index];
                                 indexg = index;
@@ -163,12 +166,14 @@ class _ShowDataScreenState extends State<ShowDataScreen> {
           actions: <Widget>[
             TextButton(
                 onPressed: () {
+                  // ignore: avoid_print
                   print("Show Dialog -->>");
                   Navigator.pop(context);
                 },
                 child: const Text("Back")),
             TextButton(
                 onPressed: () {
+                  // ignore: avoid_print
                   print("Show Dialog -->>");
                   setState(() {
                     userModelList.removeAt(indexRemove!);

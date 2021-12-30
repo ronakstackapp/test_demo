@@ -80,6 +80,7 @@ class Button extends StatelessWidget {
 }
 
 
+// ignore: camel_case_types
 class tabWidget extends StatelessWidget {
   const tabWidget({
     Key? key, this.inkWellTap, this.intColor, this.iconWidget,
@@ -107,6 +108,7 @@ class tabWidget extends StatelessWidget {
             valueListenable: counter,
             builder:
                 (BuildContext context, int value, Widget? child) {
+              // ignore: avoid_print
               print("ValueListenableBuilder-->>$value");
               return Container(
                 width: double.infinity,

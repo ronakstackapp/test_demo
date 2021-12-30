@@ -1,37 +1,42 @@
 // ignore_for_file: avoid_print, duplicate_ignore
 
-
+import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test_demo/common_widget.dart';
 import 'package:test_demo/model/usermodel.dart';
 import 'package:test_demo/screen/pageview_home_screen.dart';
+import 'package:test_demo/shared_pref/shared_pref_model.dart';
 import 'package:test_demo/validation/validation_screen.dart';
 
-
-
 UserModel? userModelg;
+Map<String, dynamic>? userModelData;
 int? indexg;
 
-class FillDataScreen extends StatefulWidget {
-  const FillDataScreen({Key? key}) : super(key: key);
+class SharePrefFillDataScreen extends StatefulWidget {
+  const SharePrefFillDataScreen({Key? key, this.isUser}) : super(key: key);
+
+  final bool? isUser;
 
   // final UserModel? userModel;
   // final int? listIndex;
   //
-  // const FillDataScreen({Key? key, this.userModel, this.listIndex})
+  // const SharePrefFillDataScreen({Key? key, this.userModel, this.listIndex})
   //     : super(key: key);
 
   @override
-  _FillDataScreenState createState() => _FillDataScreenState();
+  _SharePrefFillDataScreenState createState() =>
+      _SharePrefFillDataScreenState();
 }
 
-List<UserModel> userModelList = [];
+List<UserModel> userModelListPref = [];
+List<UserModel> userList = [];
 
-class _FillDataScreenState extends State<FillDataScreen> {
+class _SharePrefFillDataScreenState extends State<SharePrefFillDataScreen> {
   //final _key = GlobalKey<FormState>();
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   TextEditingController nameController = TextEditingController();
@@ -45,17 +50,41 @@ class _FillDataScreenState extends State<FillDataScreen> {
   bool password = true;
   bool isAdult = false;
 
+  updateData() {
+    if (widget.isUser ?? false) {
+      nameController.text = userModelData!['name'];
+      emailController.text = userModelData!['email'];
+      selectedDate = DateTime.parse(userModelData!['dob']);
+      dobController.text = DateFormat('dd/MM/yyyy').format(selectedDate!);
+      passwordController.text = userModelData!['password'];
+      confirmPasswordController.text = userModelData!['password'];
+      print("picked --->> DoB${userModelData!['dob']}");
+
+      if (DateTime.now().year - selectedDate!.year > 18) {
+        print("adult");
+        isAdult = true;
+      } else {
+        isAdult = false;
+      }
+    }
+  }
+
   // DateTime? picked;
 
   @override
   void initState() {
     FocusManager.instance.primaryFocus?.unfocus();
+    print("initState ~~~~~~>${widget.isUser}");
+
+    updateData();
+
     // TODO: implement initState
     if (userModelg != null) {
+      print("userModelData!['name'] -------->${userModelData!['name']}");
       print("aaaaaa");
-      nameController.text = userModelg!.name!;
+      nameController.text = userModelData!['name'];
       emailController.text = userModelg!.email!;
-       selectedDate = userModelg!.dob;
+      selectedDate = userModelg!.dob;
       dobController.text = DateFormat('dd/MM/yyyy').format(selectedDate!);
       passwordController.text = userModelg!.password!;
       confirmPasswordController.text = userModelg!.password!;
@@ -194,9 +223,9 @@ class _FillDataScreenState extends State<FillDataScreen> {
                       height: 15,
                     ),
                     Button(
-                      buttonText:
-                      userModelg == null ? "Register" : "Update",
-                      pressedButton: () {
+                      buttonText: widget.isUser! ? "Update" : "Register",
+                      // buttonText: widget.isUser! ? "Register" : "Update",
+                      pressedButton: () async {
                         FocusScope.of(context).requestFocus(FocusNode());
                         UserModel userModel = UserModel(
                           name: nameController.text,
@@ -205,44 +234,68 @@ class _FillDataScreenState extends State<FillDataScreen> {
                           password: passwordController.text,
                         );
 
-
                         if (_key.currentState!.validate()) {
-
                           FocusScope.of(context).requestFocus(FocusNode());
-                          if (userModelg == null) {
-                            userModelList.add(userModel);
-                          } else {
-                            userModelList.removeAt(indexg!);
-                            userModelList.insert(indexg!, userModel);
-                          }
-                          print("userModelList -->> 0 ");
+                          //  String user = jsonEncode(userModel);
+                          //   print(user);
 
-                          print("userModelList -->> 1");
+                          ///
+                          //     bool res = await MySharedPreferences.saveModel('user1', user);
+
+                          if (widget.isUser ?? false) {
+                            print("Update------");
+                            String res = await MySharedPreferences.modelRead('user1');
+                            List<dynamic> data = jsonDecode(res);
+                            data.removeAt(indexg!);
+                            data.insert(indexg!, userModel);
+
+
+                            String userDataNew = jsonEncode(data);
+                            MySharedPreferences.saveModel('user1', userDataNew);
+                          } else {
+                            final SharedPreferences pref =
+                                await SharedPreferences.getInstance();
+                            if (pref.containsKey('user1')) {
+                              print("yes------");
+                              String res = await MySharedPreferences.modelRead('user1');
+                              List<dynamic> data = jsonDecode(res);
+                              data.add(userModel);
+                              String userDataNew = jsonEncode(data);
+                              MySharedPreferences.saveModel(
+                                  'user1', userDataNew);
+                            } else {
+                              print("No------");
+
+                              userList.add(userModel);
+                              print("Check -->> list -->>$userModel");
+
+                              String userData = jsonEncode(userList);
+                              MySharedPreferences.saveModel('user1', userData);
+                            }
+                          }
+
                           // tabController!.index = 2;
 
                           ///tabbar
-                        //  tabController!.animateTo(2,duration: const Duration(milliseconds: 1000),curve: Curves.easeInCirc);
-
+                          //  tabController!.animateTo(2,duration: const Duration(milliseconds: 1000),curve: Curves.easeInCirc);
 
                           ///pageView
-                          pageController!.animateToPage(
-                              2, duration: const Duration(milliseconds: 1000),
+                          pageController!.animateToPage(2,
+                              duration: const Duration(milliseconds: 1000),
                               curve: Curves.ease);
-                          Future.delayed( const Duration(milliseconds: 500),(){
+                          Future.delayed(const Duration(milliseconds: 500), () {
                             counter.value = 2;
                           });
-
 
                           ///navigator
                           // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
                           //  const  HomeScreen(selectedPage: 2)), (Route<dynamic> route) => false);
 
                           // ignore: avoid_print
-                          print("userModelList -->>${userModelList.length}");
-                          print("userModelList -->>${userModelList[0].email}");
 
-                          Future.delayed(const Duration(milliseconds: 1000),(){
-                            return  userModelg = null;
+                          Future.delayed(const Duration(milliseconds: 1000),
+                              () {
+                            return userModelg = null;
                           });
                         }
                       },
@@ -306,8 +359,5 @@ class _FillDataScreenState extends State<FillDataScreen> {
 //     }));
 //   }
 // }
-
-
-
 
 }

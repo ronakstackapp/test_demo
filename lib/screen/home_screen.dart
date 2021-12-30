@@ -5,7 +5,6 @@ import 'package:test_demo/screen/register_screen.dart';
 import 'package:test_demo/screen/show_data_screen.dart';
 
 import 'fill_data_screeen.dart';
-import 'pageview_home_screen.dart';
 
 
 TabController? tabController;
@@ -37,6 +36,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         vsync: this, length: 3,);
 
     tabController!.addListener(() {
+      // ignore: avoid_print
       print("widget.selectedPage -->.${tabController!.index}");
     tabController!.animateTo(tabController!.index,duration: const Duration(milliseconds: 2000),curve: Curves.easeInCirc);
     //  tabController!.animateTo(widget.selectedPage,curve: Curves.bounceIn);
