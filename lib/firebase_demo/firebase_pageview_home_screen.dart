@@ -4,14 +4,14 @@
 //
 // // PageController? pageController;
 //
-// class TestWidget extends StatefulWidget {
-//   TestWidget({Key? key}) : super(key: key);
+// class FirebasePageView extends StatefulWidget {
+//   FirebasePageView({Key? key}) : super(key: key);
 //
 //   @override
-//   _TestWidgetState createState() => _TestWidgetState();
+//   _FirebasePageViewState createState() => _FirebasePageViewState();
 // }
 //
-// class _TestWidgetState extends State<TestWidget> {
+// class _FirebasePageViewState extends State<FirebasePageView> {
 //   int _selectedIndex = 0;
 //
 //    late PageController _pageController;
@@ -82,7 +82,7 @@
 //               child: Container(height: 200,width: 200,color:
 //                 Colors.green,),
 //             )
-//             // TestWidget(),
+//             // FirebasePageView(),
 //             // // RegisterScreen(userModel: widget.userModel,),
 //             // // ignore: prefer_const_constructors
 //             // FillDataScreen(
@@ -101,27 +101,26 @@ import 'package:flutter/material.dart';
 import 'package:test_demo/firebase_demo/firebase_fill_data.dart';
 import 'package:test_demo/firebase_demo/firebase_register.dart';
 import 'package:test_demo/firebase_demo/firebase_show_data.dart';
-import 'package:test_demo/screen/register_screen.dart';
-import 'package:test_demo/screen/show_data_screen.dart';
+
 
 import '../common_widget.dart';
-import 'fill_data_screeen.dart';
 
-PageController? pageController;
-int? tabInt = 0;
+
+
+// int? tabInt = 0;
 ValueNotifier<int> counter = ValueNotifier(0);
 
-class TestWidget extends StatefulWidget {
-  TestWidget({Key? key}) : super(key: key);
+class FirebasePageView extends StatefulWidget {
+  FirebasePageView({Key? key}) : super(key: key);
 
   @override
-  _TestWidgetState createState() => _TestWidgetState();
+  _FirebasePageViewState createState() => _FirebasePageViewState();
 }
 
-class _TestWidgetState extends State<TestWidget> {
+class _FirebasePageViewState extends State<FirebasePageView> {
   int _selectedIndex = 0;
 
-  // late PageController _pageController;
+  PageController? pageController;
 
   @override
   void initState() {
