@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // ignore: unused_import
 import 'package:intl/intl.dart';
+import 'package:test_demo/firebase_demo/firebase_pageview_home_screen.dart';
 import 'package:test_demo/model/usermodel.dart';
 import 'package:test_demo/screen/pageview_home_screen.dart';
 import 'database_screen.dart';
@@ -46,8 +47,6 @@ class _FirebaseShowDataScreenState extends State<FirebaseShowDataScreen> {
           //  stream: Database.readItems(),
             stream: FirebaseFirestore.instance.collection('User').snapshots(),
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-
-
               if(snapshot.hasData){
                 return  ListView.builder(
                   itemCount:snapshot.data!.docs.length,
@@ -121,7 +120,7 @@ class _FirebaseShowDataScreenState extends State<FirebaseShowDataScreen> {
                                   InkWell(
                                     onTap: () {
                                       ///pageVIew
-                                      print("tab inderx ---- 0 -- $tabInt");
+                                     // print("tab inderx ---- 0 -- $tabInt");
                                       pageController!.animateToPage(1,
                                           duration:
                                           const Duration(milliseconds: 1000),
@@ -133,7 +132,7 @@ class _FirebaseShowDataScreenState extends State<FirebaseShowDataScreen> {
                                       ///tabbar
                                       //  tabController!.index = 1;
 
-                                      print("tab inderx ---- 1 -- $tabInt");
+                                     // print("tab inderx ---- 1 -- $tabInt");
 
 
                                       UserModel userModel =UserModel(

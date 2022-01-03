@@ -106,7 +106,7 @@ import 'package:test_demo/firebase_demo/firebase_show_data.dart';
 import '../common_widget.dart';
 
 
-
+PageController? pageController;
 // int? tabInt = 0;
 ValueNotifier<int> counter = ValueNotifier(0);
 
@@ -207,9 +207,10 @@ class _FirebasePageViewState extends State<FirebasePageView> {
           // ShowDataScreen(),
 
           ///firebase
+
           FirebaseRegisterScreen(),
           FirebaseFillDataScreen(),
-          FirebaseShowDataScreen()
+          FirebaseShowDataScreen(),
         ],
       ),
     );
