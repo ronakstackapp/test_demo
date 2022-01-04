@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
+import 'package:test_demo/facebook_login/model.dart';
 import 'package:test_demo/model/firebase_user_model.dart';
 import 'package:test_demo/model/usermodel.dart';
 import 'package:test_demo/phoneverification/phone_verification_screen.dart';
@@ -163,6 +164,7 @@ class _FirebaseRegisterScreenState extends State<FirebaseRegisterScreen> {
                                 }
                               },
                             ),
+
                           ],
                         ),
 
@@ -221,7 +223,9 @@ class _FirebaseRegisterScreenState extends State<FirebaseRegisterScreen> {
               //initiateFacebookLogin();
             }
           ),
-
+          TextButton(onPressed: (){
+            FireBaseModel.onTapFacebookLogin();
+          }, child:const Text("FaceBook Login"))
         ],
       ),
     );
