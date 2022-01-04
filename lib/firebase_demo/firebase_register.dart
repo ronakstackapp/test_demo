@@ -10,7 +10,7 @@ import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
 import 'package:test_demo/facebook_login/model.dart';
 import 'package:test_demo/firebase_storage/firebase_img_upload.dart';
-import 'package:test_demo/firebase_storage/firebase_multi_img_upload.dart';
+import 'package:test_demo/multi_img_storage/firebase_multi_img_upload.dart';
 import 'package:test_demo/model/firebase_user_model.dart';
 import 'package:test_demo/model/usermodel.dart';
 import 'package:test_demo/phoneverification/phone_verification_screen.dart';
@@ -232,7 +232,7 @@ class _FirebaseRegisterScreenState extends State<FirebaseRegisterScreen> {
             Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) { return const ImageUpload(); }));
           }, child:const Text("Img Upload")),
           TextButton(onPressed: (){
-            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) { return const MultiImgUploadScreen(); }));
+           // Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) { return  MultiImgUploadScreen(); }));
           }, child:const Text("Multi Img Upload"))
         ],
       ),

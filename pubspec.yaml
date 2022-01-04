@@ -52,6 +52,10 @@ dependencies:
   firebase_storage: ^10.2.4
   permission_handler: ^6.0.0
 
+#Mulit_img_storage
+  multi_image_picker: ^4.6.1
+  carousel_pro: ^1.0.0
+
 
 dev_dependencies:
   flutter_test:
