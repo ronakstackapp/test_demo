@@ -3,9 +3,11 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class Service {
   static Future<UserCredential?> signInWithFacebook() async {
+    // ignore: avoid_print
     print("signInWithFacebook --- 0");
     final LoginResult result = await FacebookAuth.instance.login();
     if (result.status == LoginStatus.success) {
+      // ignore: avoid_print
       print("signInWithFacebook --- 1 ---${result.accessToken}");
       // Create a credential from the access token
       final OAuthCredential credential =

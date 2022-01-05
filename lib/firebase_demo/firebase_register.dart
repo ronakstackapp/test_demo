@@ -3,27 +3,21 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-
-
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
 import 'package:test_demo/facebook_login/model.dart';
 import 'package:test_demo/firebase_storage/firebase_img_upload.dart';
-import 'package:test_demo/multi_img_storage/firebase_multi_img_upload.dart';
-import 'package:test_demo/model/firebase_user_model.dart';
+import 'package:test_demo/file_picker_demo/file_picker_demo.dart';
 import 'package:test_demo/model/usermodel.dart';
+import 'package:test_demo/multi_img_storage/multi_img.dart';
 import 'package:test_demo/phoneverification/phone_verification_screen.dart';
-import 'package:test_demo/res/resource_screen.dart';
-import 'package:test_demo/screen/fill_data_screeen.dart';
 // ignore: unused_import
 import 'package:test_demo/screen/home_screen.dart';
 import 'package:test_demo/validation/validation_screen.dart';
-
 import '../common_widget.dart';
 import 'auth_screen.dart';
 import 'login_user_data.dart';
-import 'phone_varification.dart';
+
 
 String email = "";
 String yourPassword ="";
@@ -228,12 +222,21 @@ class _FirebaseRegisterScreenState extends State<FirebaseRegisterScreen> {
           TextButton(onPressed: (){
             FireBaseModel.onTapFacebookLogin();
           }, child:const Text("FaceBook Login")),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              TextButton(onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) { return const ImageUpload(); }));
+              }, child:const Text("Img Upload")),
+              TextButton(onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) { return  UploadMultipleImageDemo(); }));
+              }, child:const Text("Multi Img Upload"))
+            ],
+          ),
           TextButton(onPressed: (){
-            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) { return const ImageUpload(); }));
-          }, child:const Text("Img Upload")),
-          TextButton(onPressed: (){
-           // Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) { return  MultiImgUploadScreen(); }));
-          }, child:const Text("Multi Img Upload"))
+            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) { return  FilePickerDemo(); }));
+          }, child:const Text("File Picker"))
+
         ],
       ),
     );

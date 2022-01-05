@@ -120,7 +120,7 @@ class FirebasePageView extends StatefulWidget {
 class _FirebasePageViewState extends State<FirebasePageView> {
   int _selectedIndex = 0;
 
-  PageController? pageController;
+ // PageController? pageController;
 
   @override
   void initState() {

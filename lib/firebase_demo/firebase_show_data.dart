@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 // ignore: unused_import
 import 'package:intl/intl.dart';
 import 'package:test_demo/firebase_demo/firebase_pageview_home_screen.dart';
+import 'package:test_demo/firebase_storage/firebase_img_upload.dart';
 import 'package:test_demo/model/usermodel.dart';
 import 'package:test_demo/screen/pageview_home_screen.dart';
 import 'database_screen.dart';
@@ -72,41 +73,50 @@ class _FirebaseShowDataScreenState extends State<FirebaseShowDataScreen> {
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(20),
                               ),
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 8),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    _RowData(
-                                      title: "Name : ",
-                                      data: "${documentSnapshot['name']}",
-                                    ),
-                                    _RowData(
-                                      title: "Email : ",
-                                      data: "${documentSnapshot['email']}",
-                                    ),
-                                    Row(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 8),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                                       children: [
-                                        const Text(
-                                          "DOB : ",
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold),
+                                        _RowData(
+                                          title: "Name : ",
+                                          data: "${documentSnapshot['name']}",
                                         ),
-                                        const SizedBox(
-                                          width: 5,
+                                        _RowData(
+                                          title: "Email : ",
+                                          data: "${documentSnapshot['email']}",
                                         ),
-                                          Text("${documentSnapshot['dob']}")
-                                      //  Text(DateFormat('dd/MM/yyyy').format(DateTime.parse(documentSnapshot['dob']))),
-                                     ],
-                                   ),
-                                 //   _RowData(title: "DOB : ",data: DateFormat('dd/MM/yyyy').format(userModelList[index].dob!),),
-                                    _RowData(
-                                      title: "PassWord : ",
-                                      data: "${documentSnapshot['password']}",
-                                    )
-                                  ],
-                                ),
+
+                                        Row(
+                                          children: [
+                                            const Text(
+                                              "DOB : ",
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            const SizedBox(
+                                              width: 5,
+                                            ),
+                                              Text("${documentSnapshot['dob']}")
+                                          //  Text(DateFormat('dd/MM/yyyy').format(DateTime.parse(documentSnapshot['dob']))),
+                                         ],
+                                       ),
+                                     //   _RowData(title: "DOB : ",data: DateFormat('dd/MM/yyyy').format(userModelList[index].dob!),),
+                                        _RowData(
+                                          title: "PassWord : ",
+                                          data: "${documentSnapshot['password']}",
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  documentSnapshot['img'] == null? const SizedBox(): Container(
+                                      height: 60,width: 60,
+                                      child: Image.network( documentSnapshot['img'])),
+                                ],
                               ),
                             ),
                           ),

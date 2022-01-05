@@ -5,20 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+String? imageUrl;
+
 class ImageUpload extends StatefulWidget {
   const ImageUpload({Key? key}) : super(key: key);
 
   @override
   _ImageUploadState createState() => _ImageUploadState();
 }
-
 class _ImageUploadState extends State<ImageUpload> {
-  String? imageUrl;
   bool isImg =false;
 
 
   uploadImage() async {
-
     final _firebaseStorage = FirebaseStorage.instance;
     final _imagePicker = ImagePicker();
     PickedFile image;
@@ -43,6 +42,7 @@ class _ImageUploadState extends State<ImageUpload> {
         setState(() {
           imageUrl = downloadUrl;
           isImg = false;
+          Navigator.pop(context);
         });
       } else {
         print('No Image Path Received');
@@ -67,54 +67,58 @@ class _ImageUploadState extends State<ImageUpload> {
         ),
       body: Container(
         color: Colors.white,
-        child: Column(
-          children: <Widget>[
-            Container(
-              height: 350,
-                width: 350,
-                margin: const EdgeInsets.all(15),
-                padding:const  EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(15),
-                  ),
-                  border: Border.all(color: Colors.white),
-                  boxShadow: const[
-                    BoxShadow(
-                      color: Colors.black12,
-                      offset: Offset(2, 2),
-                      spreadRadius: 2,
-                      blurRadius: 1,
+        child: Center(
+          child: Column(
+            children: <Widget>[
+              Container(
+                // height: 350,
+                //   width: 350,
+                height: 150,
+                  width: 150,
+                  margin: const EdgeInsets.all(15),
+                  padding:const  EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(15),
                     ),
-                  ],
-                ),
-                child:
-                isImg ? const Center(child:  CircularProgressIndicator()) :
-                (imageUrl != null)
-                    ? Image.network(imageUrl!)
-                    : Image.network('https://i.imgur.com/sUFH1Aq.png')
-            ),
-            const SizedBox(height: 20.0,),
-            RaisedButton(
-              child:const  Text("Upload Image", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20)),
-              onPressed: (){
-                uploadImage();
-                setState(() {
-                  isImg = true;
-                });
-              },
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                  side:const BorderSide(color: Colors.blue)
+                    border: Border.all(color: Colors.white),
+                    boxShadow: const[
+                      BoxShadow(
+                        color: Colors.black12,
+                        offset: Offset(2, 2),
+                        spreadRadius: 2,
+                        blurRadius: 1,
+                      ),
+                    ],
+                  ),
+                  child:
+                  isImg ? const Center(child:  CircularProgressIndicator()) :
+                  (imageUrl != null)
+                      ? Image.network(imageUrl!)
+                      : Image.network('https://i.imgur.com/sUFH1Aq.png')
               ),
-              elevation: 5.0,
-              color: Colors.blue,
-              textColor: Colors.white,
-              padding:const EdgeInsets.fromLTRB(15, 15, 15, 15),
-              splashColor: Colors.grey,
-            ),
-          ],
+              const SizedBox(height: 20.0,),
+              RaisedButton(
+                child:const  Text("Upload Image", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20)),
+                onPressed: (){
+                  uploadImage();
+                  setState(() {
+                    isImg = true;
+                  });
+                },
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
+                    side:const BorderSide(color: Colors.blue)
+                ),
+                elevation: 5.0,
+                color: Colors.blue,
+                textColor: Colors.white,
+                padding:const EdgeInsets.fromLTRB(15, 15, 15, 15),
+                splashColor: Colors.grey,
+              ),
+            ],
+          ),
         ),
       ),);
   }

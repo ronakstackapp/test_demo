@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:test_demo/common_widget.dart';
 import 'package:test_demo/firebase_demo/database_screen.dart';
 import 'package:test_demo/firebase_demo/firebase_pageview_home_screen.dart';
+import 'package:test_demo/firebase_storage/firebase_img_upload.dart';
 import 'package:test_demo/model/usermodel.dart';
 import 'package:test_demo/screen/pageview_home_screen.dart';
 import 'package:test_demo/validation/validation_screen.dart';
@@ -18,6 +19,7 @@ UserModel? userModelg;
 int? indexg;
 bool isUpdate = false;
 String? id;
+String? images;
 
 class FirebaseFillDataScreen extends StatefulWidget {
   const FirebaseFillDataScreen({Key? key}) : super(key: key);
@@ -204,74 +206,92 @@ print("**********${dobController.text.split('/').last}");
                     const SizedBox(
                       height: 15,
                     ),
-                    Button(
-                      buttonText:
-                      isUpdate ? "Update" : "Register",
-                      pressedButton: () {
-                        FocusScope.of(context).requestFocus(FocusNode());
-                        // UserModel userModel = UserModel(
-                        //   name: nameController.text,
-                        //   email: emailController.text,
-                        //   dob: selectedDate,
-                        //   password: passwordController.text,
-                        // );
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Button(
+                          buttonText:
+                          isUpdate ? "Update" : "Register",
+                          pressedButton: () {
+                            FocusScope.of(context).requestFocus(FocusNode());
+                            // UserModel userModel = UserModel(
+                            //   name: nameController.text,
+                            //   email: emailController.text,
+                            //   dob: selectedDate,
+                            //   password: passwordController.text,
+                            // );
 
-                        Map<String,dynamic> userData ={
-                          "name": nameController.text,
-                          "email": emailController.text,
-                          "dob": dobController.text,
-                          "password": passwordController.text,
-                        };
+                            Map<String,dynamic> userData ={
+                              "name": nameController.text,
+                              "email": emailController.text,
+                              "dob": dobController.text,
+                              "password": passwordController.text,
+                              "img":imageUrl,
+                            };
 
-                        if (_key.currentState!.validate()) {
+                            if (_key.currentState!.validate()) {
 
-                          FocusScope.of(context).requestFocus(FocusNode());
+                              FocusScope.of(context).requestFocus(FocusNode());
 
-                          if(isUpdate){
-                            Database.updateItem(data:userData,docId: id);
-                            Future.delayed(const Duration(milliseconds: 700),(){
-                              isUpdate = false;
-                            });
+                              if(isUpdate){
+                                Database.updateItem(data:userData,docId: id);
+                                Future.delayed(const Duration(milliseconds: 700),(){
+                                  isUpdate = false;
+                                });
 
-                          }else{
-                            Database.addItem(data: userData);
-                          }
+                              }else{
+                                Database.addItem(data: userData);
+                              }
 
-                          // if (userModelg == null) {
-                          //   userModelList.add(userModel);
-                          // } else {
-                          //   userModelList.removeAt(indexg!);
-                          //   userModelList.insert(indexg!, userModel);
-                          // }
+                              // if (userModelg == null) {
+                              //   userModelList.add(userModel);
+                              // } else {
+                              //   userModelList.removeAt(indexg!);
+                              //   userModelList.insert(indexg!, userModel);
+                              // }
 
-                          // tabController!.index = 2;
+                              // tabController!.index = 2;
 
-                          ///tabbar
-                          //  tabController!.animateTo(2,duration: const Duration(milliseconds: 1000),curve: Curves.easeInCirc);
-
-
-                          ///pageView
-                          pageController!.animateToPage(
-                              2, duration: const Duration(milliseconds: 1000),
-                              curve: Curves.ease);
-                          Future.delayed( const Duration(milliseconds: 500),(){
-                            counter.value = 2;
-                          });
+                              ///tabbar
+                              //  tabController!.animateTo(2,duration: const Duration(milliseconds: 1000),curve: Curves.easeInCirc);
 
 
-                          ///navigator
-                          // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-                          //  const  HomeScreen(selectedPage: 2)), (Route<dynamic> route) => false);
+                              ///pageView
+                              pageController!.animateToPage(
+                                  2, duration: const Duration(milliseconds: 1000),
+                                  curve: Curves.ease);
+                              Future.delayed( const Duration(milliseconds: 500),(){
+                                counter.value = 2;
+                              });
 
-                          // ignore: avoid_print
-                          // print("userModelList -->>${userModelList.length}");
-                          // print("userModelList -->>${userModelList[0].email}");
 
-                          Future.delayed(const Duration(milliseconds: 1000),(){
-                            return  userModelg = null;
-                          });
-                        }
-                      },
+                              ///navigator
+                              // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                              //  const  HomeScreen(selectedPage: 2)), (Route<dynamic> route) => false);
+
+                              // ignore: avoid_print
+                              // print("userModelList -->>${userModelList.length}");
+                              // print("userModelList -->>${userModelList[0].email}");
+
+                              Future.delayed(const Duration(milliseconds: 1000),(){
+                                return  userModelg = null;
+                              });
+                            }
+                          },
+                        ),
+                        Button(buttonText: "Img",pressedButton: (){
+                          showModalBottomSheet(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return   SizedBox(
+                                 height: MediaQuery.of(context).size.height*2,
+                                  child: const ImageUpload(),
+                                );
+                              }
+                          );
+                        },),
+
+                      ],
                     ),
                     const SizedBox(
                       height: 15,
