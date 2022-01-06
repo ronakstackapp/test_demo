@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
 import 'package:test_demo/facebook_login/model.dart';
+import 'package:test_demo/firebase_notification/firebase_notification_screen.dart';
 import 'package:test_demo/firebase_storage/firebase_img_upload.dart';
 import 'package:test_demo/file_picker_demo/file_picker_demo.dart';
+import 'package:test_demo/firebase_storage/second_firebase_img_upload.dart';
 import 'package:test_demo/model/usermodel.dart';
 import 'package:test_demo/multi_img_storage/multi_img.dart';
 import 'package:test_demo/phoneverification/phone_verification_screen.dart';
@@ -219,23 +221,33 @@ class _FirebaseRegisterScreenState extends State<FirebaseRegisterScreen> {
               //initiateFacebookLogin();
             }
           ),
-          TextButton(onPressed: (){
-            FireBaseModel.onTapFacebookLogin();
-          }, child:const Text("FaceBook Login")),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               TextButton(onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) { return const ImageUpload(); }));
+                FireBaseModel.onTapFacebookLogin();
+              }, child:const Text("FaceBook Login")),
+              TextButton(onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) { return  FilePickerDemo(); }));
+              }, child:const Text("File Picker"))
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              TextButton(onPressed: (){
+               // Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) { return const ImageUpload(); }));
+                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) { return  UploadingImageToFirebaseStorage(); }));
               }, child:const Text("Img Upload")),
               TextButton(onPressed: (){
                 Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) { return  UploadMultipleImageDemo(); }));
               }, child:const Text("Multi Img Upload"))
+
             ],
           ),
           TextButton(onPressed: (){
-            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) { return  FilePickerDemo(); }));
-          }, child:const Text("File Picker"))
+            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) { return const FirebaseNotificationScreen(); }));
+          }, child:const Text("Firebase Notification Screen"))
 
         ],
       ),

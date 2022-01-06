@@ -30,6 +30,7 @@ class UploadTaskListTile extends StatelessWidget {
 
           // final StorageTaskEvent event = asyncSnapshot.data;
           // final StorageTaskSnapshot snapshot = event.snapshot;
+
           subtitle = Text('$state: ${_bytesTransferred(event)} bytes sent');
         } else {
           subtitle = const Text('Starting...');
@@ -51,7 +52,19 @@ class UploadTaskListTile extends StatelessWidget {
           onDismissed: (_) => onDismissed!(),
           child: ListTile(
             title: Text('Upload Task #${task.hashCode}'),
-            subtitle: subtitle,
+            subtitle: Column(
+              children: [
+                subtitle,
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: 12),
+                //   child: LinearProgressIndicator(
+                //     value:event?.bytesTransferred.toDouble()??0,
+                //     minHeight: 2.0,
+                //     color: Colors.red,
+                //   ),
+                // ),
+              ],
+            ),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
