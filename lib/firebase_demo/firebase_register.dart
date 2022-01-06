@@ -142,6 +142,9 @@ class _FirebaseRegisterScreenState extends State<FirebaseRegisterScreen> {
                                     final newUser = await _auth.createUserWithEmailAndPassword(
                                         email: emailController.text, password: passwordController.text);
 
+
+
+
                                     print("*****${newUser.toString()}");
                                     // if (newUser != null) {
                                     //   Navigator.pushNamed(context, 'home_screen');
