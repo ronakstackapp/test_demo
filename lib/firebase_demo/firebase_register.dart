@@ -6,13 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
 import 'package:test_demo/facebook_login/model.dart';
-import 'package:test_demo/firebase_notification/firebase_notification_screen.dart';
-import 'package:test_demo/firebase_storage/firebase_img_upload.dart';
 import 'package:test_demo/file_picker_demo/file_picker_demo.dart';
 import 'package:test_demo/firebase_storage/second_firebase_img_upload.dart';
+import 'package:test_demo/local_notification/local_notification_with_all_method/local_notification_screen.dart';
 import 'package:test_demo/model/usermodel.dart';
 import 'package:test_demo/multi_img_storage/multi_img.dart';
+import 'package:test_demo/notification/firebase_notification_screen.dart';
+import 'package:test_demo/notification/method_notification_screen.dart';
 import 'package:test_demo/phoneverification/phone_verification_screen.dart';
+
 // ignore: unused_import
 import 'package:test_demo/screen/home_screen.dart';
 import 'package:test_demo/validation/validation_screen.dart';
@@ -20,20 +22,17 @@ import '../common_widget.dart';
 import 'auth_screen.dart';
 import 'login_user_data.dart';
 
-
 String email = "";
-String yourPassword ="";
-
+String yourPassword = "";
 
 class FirebaseRegisterScreen extends StatefulWidget {
   const FirebaseRegisterScreen({Key? key, this.userModel}) : super(key: key);
   final UserModel? userModel;
 
-
-
   @override
   _FirebaseRegisterScreenState createState() => _FirebaseRegisterScreenState();
 }
+
 class _FirebaseRegisterScreenState extends State<FirebaseRegisterScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -42,7 +41,10 @@ class _FirebaseRegisterScreenState extends State<FirebaseRegisterScreen> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   String? userName;
   final _auth = FirebaseAuth.instance;
- User? userData;
+  User? userData;
+  String notificationTitle = 'No Title';
+  String notificationBody = 'No Body';
+  String notificationData = 'No Data';
 
   bool isLoggedIn = false;
 
@@ -55,10 +57,11 @@ class _FirebaseRegisterScreenState extends State<FirebaseRegisterScreen> {
   @override
   void initState() {
     FocusManager.instance.primaryFocus?.unfocus();
+    showMessage();
     // TODO: implement initState
     userName = "";
 
-    if((email != "" && yourPassword != "")){
+    if ((email != "" && yourPassword != "")) {
       emailController.text = email;
       passwordController.text = yourPassword;
     }
@@ -69,6 +72,29 @@ class _FirebaseRegisterScreenState extends State<FirebaseRegisterScreen> {
     super.initState();
   }
 
+  showMessage() {
+    final firebaseMessaging = FCM();
+    firebaseMessaging.setNotifications(context);
+
+    firebaseMessaging.streamCtlr.stream.listen(_changeData);
+    firebaseMessaging.bodyCtlr.stream.listen(_changeBody);
+    firebaseMessaging.titleCtlr.stream.listen(_changeTitle);
+  }
+
+  _changeData(String msg) {
+    if (!mounted) return;
+    setState(() => notificationData = msg);
+  }
+
+  _changeBody(String msg) {
+    if (!mounted) return;
+    setState(() => notificationBody = msg);
+  }
+
+  _changeTitle(String msg) {
+    if (!mounted) return;
+    setState(() => notificationTitle = msg);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +122,8 @@ class _FirebaseRegisterScreenState extends State<FirebaseRegisterScreen> {
                                   horizontal: 15, vertical: 10),
                               child: CommonTextField(
                                 textInputType: TextInputType.emailAddress,
-                                validatorOnTap: (value) => loginEmailValidation(value),
+                                validatorOnTap: (value) =>
+                                    loginEmailValidation(value),
                                 controller: emailController,
                                 hint: "Enter Your Email",
                               ),
@@ -118,14 +145,15 @@ class _FirebaseRegisterScreenState extends State<FirebaseRegisterScreen> {
                                       });
                                     },
                                     child:
-                                    // password
-                                    //     ? const Icon(Icons.remove_red_eye,
-                                    //         color: Colors.blue)
-                                    //
-                                    //   :
-                                    Icon(Icons.remove_red_eye,
-                                        color: password ?  Colors.blue[400] : Colors.blue)
-                                ),
+                                        // password
+                                        //     ? const Icon(Icons.remove_red_eye,
+                                        //         color: Colors.blue)
+                                        //
+                                        //   :
+                                        Icon(Icons.remove_red_eye,
+                                            color: password
+                                                ? Colors.blue[400]
+                                                : Colors.blue)),
                               ),
                             ),
                             const SizedBox(
@@ -134,16 +162,15 @@ class _FirebaseRegisterScreenState extends State<FirebaseRegisterScreen> {
                             Button(
                               buttonText: "Login",
                               pressedButton: () async {
-                                FocusScope.of(context).requestFocus(FocusNode());
+                                FocusScope.of(context)
+                                    .requestFocus(FocusNode());
 
                                 if (_key.currentState!.validate()) {
-
                                   try {
-                                    final newUser = await _auth.createUserWithEmailAndPassword(
-                                        email: emailController.text, password: passwordController.text);
-
-
-
+                                    final newUser = await _auth
+                                        .createUserWithEmailAndPassword(
+                                            email: emailController.text,
+                                            password: passwordController.text);
 
                                     print("*****${newUser.toString()}");
                                     // if (newUser != null) {
@@ -159,16 +186,12 @@ class _FirebaseRegisterScreenState extends State<FirebaseRegisterScreen> {
                                       ),
                                       backgroundColor: Colors.red,
                                     ));
-
                                   }
-
                                 }
                               },
                             ),
-
                           ],
                         ),
-
                       ],
                     ),
                   ),
@@ -185,23 +208,25 @@ class _FirebaseRegisterScreenState extends State<FirebaseRegisterScreen> {
                   Buttons.Google,
                   onPressed: () async {
                     print("aaa");
-                    userData = await Authentication.signInWithGoogle(context: context);
-                    if(userData != null){
-                      setState(() {
-
-                      });
+                    userData =
+                        await Authentication.signInWithGoogle(context: context);
+                    if (userData != null) {
+                      setState(() {});
                     }
                   },
                 ),
-                if(userData != null)
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: InkWell(
-                      onTap: ()  {
-                       Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) { return  LoginUserScreen(user: userData!); }));
-                      },
-                      child: const Text(" User ")),
-                ),
+                if (userData != null)
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: InkWell(
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(
+                              builder: (BuildContext context) {
+                            return LoginUserScreen(user: userData!);
+                          }));
+                        },
+                        child: const Text(" User ")),
+                  ),
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: InkWell(
@@ -213,45 +238,77 @@ class _FirebaseRegisterScreenState extends State<FirebaseRegisterScreen> {
               ],
             ),
           ),
-          TextButton(onPressed: () {
-           Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) { return const LoginWithPhone(); }));
-         },
-          child: const Text("PhoneNumber Verification")),
-          SignInButton(
-            Buttons.Facebook,
-            mini: true,
-            onPressed: ()  {
-              //initiateFacebookLogin();
-            }
-          ),
+          TextButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (BuildContext context) {
+                  return const LoginWithPhone();
+                }));
+              },
+              child: const Text("PhoneNumber Verification")),
+          SignInButton(Buttons.Facebook, mini: true, onPressed: () {
+            //initiateFacebookLogin();
+          }),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              TextButton(onPressed: (){
-                FireBaseModel.onTapFacebookLogin();
-              }, child:const Text("FaceBook Login")),
-              TextButton(onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) { return  FilePickerDemo(); }));
-              }, child:const Text("File Picker"))
+              TextButton(
+                  onPressed: () {
+                    FireBaseModel.onTapFacebookLogin();
+                  },
+                  child: const Text("FaceBook Login")),
+              TextButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return FilePickerDemo();
+                    }));
+                  },
+                  child: const Text("File Picker"))
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              TextButton(onPressed: (){
-               // Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) { return const ImageUpload(); }));
-                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) { return  UploadingImageToFirebaseStorage(); }));
-              }, child:const Text("Img Upload")),
-              TextButton(onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) { return  UploadMultipleImageDemo(); }));
-              }, child:const Text("Multi Img Upload"))
-
+              TextButton(
+                  onPressed: () {
+                    // Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) { return const ImageUpload(); }));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return UploadingImageToFirebaseStorage();
+                    }));
+                  },
+                  child: const Text("Img Upload")),
+              TextButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return UploadMultipleImageDemo();
+                    }));
+                  },
+                  child: const Text("Multi Img Upload"))
             ],
           ),
-          TextButton(onPressed: (){
-            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) { return const FirebaseNotificationScreen(); }));
-          }, child:const Text("Firebase Notification Screen"))
-
+          TextButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (BuildContext context) {
+                  return notificationScreen(
+                    notificationBody: notificationBody,
+                    notificationData: notificationData,
+                    notificationTitle: notificationTitle,
+                  );
+                }));
+              },
+              child: const Text("Firebase Notification Screen")),
+          TextButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (BuildContext context) {
+                  return LocalNotifications(title: "Local Notification....",);
+                }));
+              },
+              child: const Text("Local Notification Screen"))
         ],
       ),
     );
@@ -290,53 +347,50 @@ class _FirebaseRegisterScreenState extends State<FirebaseRegisterScreen> {
     );
   }
 
-
-
-  // void initiateFacebookLogin() async {
-  //   var facebookLogin = FacebookLogin();
-  //   var facebookLoginResult =
-  //   await facebookLogin.logInWithReadPermissions(['email']);
-  //   switch (facebookLoginResult.status) {
-  //     case FacebookLoginStatus.error:
-  //       print("Error");
-  //       onLoginStatusChanged(false);
-  //       break;
-  //     case FacebookLoginStatus.cancelledByUser:
-  //       print("CancelledByUser");
-  //       onLoginStatusChanged(false);
-  //       break;
-  //     case FacebookLoginStatus.loggedIn:
-  //       print("LoggedIn");
-  //       onLoginStatusChanged(true);
-  //       break;
-  //   }
-  // }
-///flutter_auth
-  // Future<Resource?> signInWithFacebook() async {
-  //   try {
-  //     print("FaceBook Login -->>>0");
-  //     final LoginResult result = await FacebookAuth.instance.login();
-  //     print("FaceBook Login -->>>$result");
-  //
-  //     switch (result.status) {
-  //       case LoginStatus.success:
-  //         final AuthCredential facebookCredential =
-  //         FacebookAuthProvider.credential(result.accessToken!.token);
-  //         final userCredential =
-  //         await _auth.signInWithCredential(facebookCredential);
-  //         print("FaceBook Login -->>>$userCredential");
-  //         return Resource(status: Status.Success);
-  //       case LoginStatus.cancelled:
-  //         return Resource(status: Status.Cancelled);
-  //       case LoginStatus.failed:
-  //         return Resource(status: Status.Error);
-  //       default:
-  //         return null;
-  //     }
-  //   } on FirebaseAuthException catch (e) {
-  //     throw e;
-  //   }
-  // }
+// void initiateFacebookLogin() async {
+//   var facebookLogin = FacebookLogin();
+//   var facebookLoginResult =
+//   await facebookLogin.logInWithReadPermissions(['email']);
+//   switch (facebookLoginResult.status) {
+//     case FacebookLoginStatus.error:
+//       print("Error");
+//       onLoginStatusChanged(false);
+//       break;
+//     case FacebookLoginStatus.cancelledByUser:
+//       print("CancelledByUser");
+//       onLoginStatusChanged(false);
+//       break;
+//     case FacebookLoginStatus.loggedIn:
+//       print("LoggedIn");
+//       onLoginStatusChanged(true);
+//       break;
+//   }
+// }
+  ///flutter_auth
+// Future<Resource?> signInWithFacebook() async {
+//   try {
+//     print("FaceBook Login -->>>0");
+//     final LoginResult result = await FacebookAuth.instance.login();
+//     print("FaceBook Login -->>>$result");
+//
+//     switch (result.status) {
+//       case LoginStatus.success:
+//         final AuthCredential facebookCredential =
+//         FacebookAuthProvider.credential(result.accessToken!.token);
+//         final userCredential =
+//         await _auth.signInWithCredential(facebookCredential);
+//         print("FaceBook Login -->>>$userCredential");
+//         return Resource(status: Status.Success);
+//       case LoginStatus.cancelled:
+//         return Resource(status: Status.Cancelled);
+//       case LoginStatus.failed:
+//         return Resource(status: Status.Error);
+//       default:
+//         return null;
+//     }
+//   } on FirebaseAuthException catch (e) {
+//     throw e;
+//   }
+// }
 
 }
-

@@ -11,14 +11,15 @@ import 'screen/pageview_home_screen.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  FirebaseMessaging.onBackgroundMessage(_messageHandler);
+  // FirebaseMessaging.onBackgroundMessage(_messageHandler);
+
+
   runApp(const MyApp());
 }
-Future<void> _messageHandler(RemoteMessage message) async {
-  print('background message ${message.notification!.body}');
-
-
-}
+// Future<void> _messageHandler(RemoteMessage message) async {
+//   print('background message ${message.notification!.body}');
+//
+// }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);

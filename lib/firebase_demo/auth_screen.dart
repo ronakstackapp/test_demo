@@ -45,6 +45,7 @@ class Authentication {
         try {
           final UserCredential userCredential =
           await auth.signInWithCredential(credential);
+
           ScaffoldMessenger.of(context).showSnackBar(
             Authentication.customSnackBar(
               content: 'Done',

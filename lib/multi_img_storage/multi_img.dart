@@ -29,7 +29,7 @@ class UploadMultipleImageDemoState extends State<UploadMultipleImageDemo> {
   String? _path;
 
 //  Map<String, String>? _paths;
-  List<PlatformFile>? _paths;
+  List<PlatformFile>?   _paths;
   String? _extension;
   FileType? _pickType;
   bool _multiPick = false;

@@ -103,6 +103,7 @@ import 'package:test_demo/firebase_demo/firebase_register.dart';
 import 'package:test_demo/firebase_demo/firebase_show_data.dart';
 
 
+
 import '../common_widget.dart';
 
 
@@ -136,6 +137,7 @@ class _FirebasePageViewState extends State<FirebasePageView> {
         counter.value=2;
       }
     });
+
   }
 
   @override
