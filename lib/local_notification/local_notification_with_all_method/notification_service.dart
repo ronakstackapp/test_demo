@@ -92,7 +92,7 @@ class NotificationService {
   }
   Future<void> showBigPictureNotification() async {
     var bigPictureStyleInformation = const BigPictureStyleInformation(
-      DrawableResourceAndroidBitmap("flutter_devs"),
+      DrawableResourceAndroidBitmap("@mipmap/ic_launcher"),
       largeIcon: DrawableResourceAndroidBitmap("@mipmap/ic_launcher"),
       contentTitle: 'flutter devs',
       summaryText: 'summaryText',
@@ -130,15 +130,6 @@ class NotificationService {
   Future<void> cancelAllNotification() async {
     await flutterLocalNotificationsPlugin.cancelAll();
   }
-
-
-
-
-
-
-
-
-
 
 Future<void> showPeriodicNotification() async {
   const AndroidNotificationDetails androidNotificationDetails = AndroidNotificationDetails('channel_id', 'Channel Name', 'Channel Description');

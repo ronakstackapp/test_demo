@@ -73,11 +73,6 @@ class _LocalNotificationsState extends State<LocalNotifications> {
                 onPressed: () => LocalNotification.scheduleNotification()
               ),
               const SizedBox(height: 15),
-              // RaisedButton(
-              //   child: Text('Periodic Notification'),
-              //   onPressed: () => showPeriodicNotification(),
-              // ),
-              // SizedBox(height: 15),
               RaisedButton(
                 child: const Text('Big Picture Notification'),
                 onPressed: () => LocalNotification.showBigPictureNotification()
